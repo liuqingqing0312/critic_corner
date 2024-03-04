@@ -58,3 +58,6 @@ def register(request):
 def user_logout(request):
     logout(request)
     return redirect(reverse('CriticCorner:home'))
+
+def contact(request):
+    return render(request, 'CriticCorner/contact.html')
