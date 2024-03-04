@@ -1,7 +1,8 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
-
+import datetime
+from django import utils
 
 MIN_RATING_VALUE = 0
 MAX_RATING_VALUE = 5
@@ -16,6 +17,8 @@ class Movie(models.Model):
     ROMANCE = 'romance'
     ACTION = 'action'
     COMEDY = 'comedy'
+    MIN_RATING_VALUE = 0
+    MAX_RATING_VALUE = 5
 
     GENRE_CHOICES = [
         (HORROR, 'Horror'),
@@ -24,29 +27,27 @@ class Movie(models.Model):
         (COMEDY, 'Comedy'),
         # Add more genres here if needed
     ]
-    
-    MIN_RATING_VALUE = 0
-    MAX_RATING_VALUE = 5
+
     title = models.CharField(max_length=256)
     genre = models.CharField(max_length=20, choices=GENRE_CHOICES)
+    # url will contain link to youtube video
     url = models.URLField(max_length=URL_MAX_LENGTH)
     views = models.IntegerField(default=0)
     ratings = models.IntegerField(default=0)
     poster = models.ImageField(upload_to = 'posters/')
-    release_date = models.DateField()
+    release_date = models.DateField(default=utils.timezone.now)
     avg_rating = models.DecimalField(max_digits=3, decimal_places=1, default=0.0, validators=[MinValueValidator(MIN_RATING_VALUE), MaxValueValidator(MAX_RATING_VALUE)])
-    genre = models.CharField(max_length=20, choices=GENRE_CHOICES)
 
     def __str__(self):
         return self.title
 
 
-class UserProfile(User):
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=15, blank=False)
-    wishlist = models.ManyToManyField(Movie, related_name='wishlisted_by', blank=True)
 
     def __str__(self):
-        return self.username
+        return self.user.username
 
 
 class Review(models.Model):
@@ -58,5 +59,8 @@ class Review(models.Model):
     def __str__(self):
         return self.user.__str__() + self.movie.__str__()
     
+class WishList(models.Model):
+    user_profile = models.ForeignKey(UserProfile,related_name='has', on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, related_name='contains',on_delete=models.CASCADE)
 
 
