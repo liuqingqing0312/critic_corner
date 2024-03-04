@@ -1,0 +1,22 @@
+{% extends 'CriticCorner/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Register
+{% endblock %}
+
+{% block body_block %}
+<h1>Register for CriticCorner</h1>
+{% if registered %}
+<strong>Thank you for registering!</strong><br />
+<a href="{% url 'CriticCorner:home' %}">Return to the homepage.</a><br />
+{% else %}
+<strong>Register here!</strong>
+<form id="user_form" method="post" action="{% url 'CriticCorner:register' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ user_form.as_p }}
+    {{ profile_form.as_p }}
+    <input type="submit" name="submit" value="Register" />
+</form>
+{% endif %}
+{% endblock %}

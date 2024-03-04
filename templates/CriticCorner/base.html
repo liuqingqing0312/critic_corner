@@ -72,9 +72,15 @@
         <div class="user-profile">
             <button class="profile-btn">Hi, User</button>
             <div class="dropdown-content">
+            {% if user.is_authenticated %}
               <a href="#">Account</a>
               <a href="#">Wishlist</a>
-              <a href="#">Logout</a>
+              <a href="{% url 'CriticCorner:logout' %}">Logout</a>
+            {% else %}
+              <a href="{% url 'CriticCorner:register' %}">Sign Up</a>
+              <a href="{% url 'CriticCorner:login' %}">Login</a>
+            {% endif %}
+              <a href="{% url 'CriticCorner:about' %}">About Us</a>
             </div>
             <img src="{% static 'user.png' %}" alt="User Profile" class="user">
         </div>
@@ -83,7 +89,7 @@
     <nav class="navbar navbar-expand-sm">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#">Home</a>
+            <a class="nav-link" href="{% url 'CriticCorner:home' %}">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'CriticCorner:about' %}">About</a>
@@ -103,7 +109,6 @@
         {% block body_block %}
         {% endblock %}
     </div>
-    
     <script src="{% static 'bootstrap/jquery-3.7.1.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 </body>

@@ -18,7 +18,7 @@ from django.urls import path, include
 from CriticCorner import views
 
 urlpatterns = [
-    path('about/', views.about, name='about'),
+    path('', views.home, name='home'),
     path('CriticCorner/', include('CriticCorner.urls')),
     path('admin/', admin.site.urls),
 ]
