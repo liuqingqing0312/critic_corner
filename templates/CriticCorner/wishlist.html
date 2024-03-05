@@ -1,0 +1,19 @@
+{% extends 'CriticCorner/base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    Wishlist
+{% endblock %}
+
+{% block body_block %}
+{% for item in wishlist_items %}
+    <div>
+        <img src="{{ item.movie.poster.url }}" alt="{{ item.movie.title }} Poster">
+        <h3>{{ item.movie.title }}</h3>
+        <form method="post" action="{% url 'remove_from_wishlist' item.id %}">
+            {% csrf_token %}
+            <button type="submit">Remove from Wishlist</button>
+        </form>
+    </div>
+{% endfor %}
+{% endblock %}

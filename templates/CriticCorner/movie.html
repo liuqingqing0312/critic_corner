@@ -1,0 +1,39 @@
+{% extends 'CriticCorner/base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+{{ movie.title }}
+{% endblock %}
+
+{% block body_block %}
+<style>
+    img {
+        width: 300px;
+        height: auto;
+        margin-left: 50px;
+    }
+
+    .movie-container {
+        display: flex; 
+    }
+
+    .info {
+        margin-left: 20px;
+    }
+</style>
+<div class="movie-container">
+    <span class="poster">
+        <img src="{% static 'harry_potter.jpeg' %}" alt="{{ movie.title }} Poster">
+    </span>
+    <span class="info">
+        <h3>Harry Potter</h3>
+        <h5>Released date: 2024.03.05</h5>
+        <h5>Genre: Horror</h5>
+        <h5>Rate: 5.0</h5>
+        <form method="post" action="{% url 'wishlist' movie.title %}">
+            {% csrf_token %}
+            <button type="submit">Add to Wishlist</button>
+        </form>
+    </span>
+</div>
+{% endblock %}

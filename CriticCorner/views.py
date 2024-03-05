@@ -5,6 +5,7 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.urls import reverse
+from CriticCorner.models import Movie, UserProfile, Review, WishList
 
 def about(request):
     return render(request, 'CriticCorner/about.html')
@@ -55,9 +56,17 @@ def register(request):
                            'profile_form': profile_form,
                            'registered': registered})
 
+@login_required
 def user_logout(request):
     logout(request)
     return redirect(reverse('CriticCorner:home'))
 
 def contact(request):
     return render(request, 'CriticCorner/contact.html')
+
+def movie(request):
+    return render(request, 'CriticCorner/movie.html')
+
+def wishlist(request):
+    wishlist_items = Wishlist.objects.filter(user=request.user)
+    return render(request, 'wishlist.html', {'wishlist_items': wishlist_items})
