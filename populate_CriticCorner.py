@@ -7,7 +7,7 @@ from django.core.files import File
 from django.conf import settings
 
 django.setup()
-from CriticCorner.models import Movie, Review, UserProfile, User
+from CriticCorner.models import Movie, Review, UserProfile, User, WishList
 
 def populate():
     movies = [{'title': "hound of winchester",
@@ -62,6 +62,11 @@ def populate():
         r.save()
         return r
     
+    def add_wishlist(user, movie):
+        w = WishList.objects.get_or_create(user_profile=user, movie=movie)[0]
+        w.save()
+        return w
+    
     movie_objects = []
     for movie in movies:
         movie_objects.append(add_movie(movie['title'], movie['url'], movie['genre']))
@@ -73,6 +78,9 @@ def populate():
     for i in range(len(reviews)):
         add_review(userPobjects[i % len(userPobjects)], movie_objects[i], reviews[i]['content'], reviews[i]['rating'])
 
+    for userProfile in userPobjects:
+        for i in range(2):
+            add_wishlist(userProfile, random.choice(movie_objects))
     
 
 if __name__ == '__main__':
