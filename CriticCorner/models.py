@@ -3,12 +3,12 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
 import datetime
 from django import utils
+import glob
 
 MIN_RATING_VALUE = 0
 MAX_RATING_VALUE = 5
 
 # Create your models here.
-
 class Movie(models.Model):
     TITLE_MAX_LENGTH = 128
     URL_MAX_LENGTH = 200
@@ -34,7 +34,7 @@ class Movie(models.Model):
     url = models.URLField(max_length=URL_MAX_LENGTH)
     views = models.IntegerField(default=0)
     ratings = models.IntegerField(default=0)
-    poster = models.ImageField(upload_to = 'posters/')
+    poster = models.ImageField(upload_to = 'media/')
     release_date = models.DateField(default=utils.timezone.now)
     avg_rating = models.DecimalField(max_digits=3, decimal_places=1, default=0.0, validators=[MinValueValidator(MIN_RATING_VALUE), MaxValueValidator(MAX_RATING_VALUE)])
 

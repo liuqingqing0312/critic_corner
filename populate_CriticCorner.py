@@ -3,6 +3,8 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'critic_corner.settings')
 import random
 import django
+from django.core.files import File
+from django.conf import settings
 
 django.setup()
 from CriticCorner.models import Movie, Review, UserProfile, User
@@ -39,11 +41,15 @@ def populate():
                 {'content': 'good fun movie to watch with the family',
                  'rating': 4.2}]
     
+    image_paths = os.listdir(os.path.join(os.getcwd(), 'test_media'))
+    
     def add_movie(title, url, genre):
         m = Movie.objects.get_or_create(url=url, title=title,genre=genre)[0]
         m.ratings = 20
         m.avg_rating = float(random.randint(0,5))
         m.views = 60
+        cur_path = random.choice(image_paths)
+        m.poster.save(content=File(file=open(os.path.join(os.getcwd(), 'test_media', cur_path), 'rb')), name=cur_path)
         m.save()
         return m
     def add_userProfile(username, email, password, phone_no):
