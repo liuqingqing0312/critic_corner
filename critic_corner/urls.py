@@ -18,6 +18,9 @@ from django.urls import path, include
 from CriticCorner import views
 from django.conf.urls.static import static
 from critic_corner import settings
+from django.conf import settings  # new
+from django.urls import path, include  # new
+from django.conf.urls.static import static  # new
 
 urlpatterns = [
     path('', views.home, name='home'),
