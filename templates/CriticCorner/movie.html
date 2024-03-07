@@ -6,32 +6,178 @@
 {% endblock %}
 
 {% block body_block %}
-{% for movie in movies %}
-<div class="movie-card">
-    <div class="movie-details">
-        <a href="{% url 'CriticCorner:movie' title=movie.title %}">
-            <img class="poster" src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster">
-        </a>
-        <h3 class="title">{{ movie.title }}</h3>
-        <p class="genre">Genre: {{ movie.genre }}</p>
-        <p class="views">Views: {{ movie.views }}</p>
-        <p class="avg-rating">Average Rating: {{ movie.avg_rating }}</p>
-        
-        <form method="post" action="{% url 'CriticCorner:add_review' %}">
-            {% csrf_token %}
-            <input type="hidden" name="user" value="{{ request.user }}">
-            <input type="hidden" name="movie" value="{{ movie.pk }}">
-            <input type="number" name="rating" min="1" max="5" required>
-            <button type="submit" class="submit-btn">Rate Movie</button>
-        </form>
-        
-        <form method="post" action="{% url 'CriticCorner:add_wishlist' %}">
-            {% csrf_token %}
-            <input type="hidden" name="user" value="{{ request.user }}">
-            <input type="hidden" name="movie" value="{{ movie.pk }}">
-            <button type="submit" class="submit-btn">Add to Wishlist</button>
-        </form>
+<style>
+    .movie-container {
+    display: flex;
+    flex-wrap: wrap;
+    }
+
+    .movie-card {
+        width: 1100px; /* Set a fixed width for each movie card */
+        margin-left: 30px; /* Add some margin between movie cards */
+    }
+
+    .movie-details {
+        display: flex;
+        flex-direction: row; /* Arrange details horizontally */
+    }
+
+    .poster-container {
+        margin-right: 30px; /* Add some space between poster and details */
+    }
+
+    .poster {
+        width: 250px; /* Set a fixed width for the poster */
+        height: auto; /* Maintain aspect ratio */
+    }
+
+    .details-container {
+        flex-grow: 1; /* Allow details to grow to fill available space */
+        font-size: 20px;
+    }
+
+    .submit-btn {
+        background-color: #6c757d; /* Green background */
+        border: none;
+        color: white; /* White text */
+        padding: 10px 20px; /* Padding */
+        text-align: center; /* Center text */
+        text-decoration: none; /* Remove underline */
+        display: inline-block; /* Display as inline-block */
+        font-size: 16px; /* Font size */
+        cursor: pointer; /* Cursor on hover */
+        border-radius: 5px; /* Rounded corners */
+        transition: background-color 0.3s; /* Smooth transition for background color */
+    }
+
+    .submit-btn:hover {
+        background-color: #5c636a; /* Darker green on hover */
+    }
+
+    iframe {
+        margin-left: 30px;
+    }
+
+    .reviews {
+        margin-top: 30px;
+    }
+
+    .reviews h4 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .reviews ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .reviews li {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 10px;
+    }
+
+    .reviews li p {
+        margin: 5px 0;
+    }
+
+    .reviews li p:first-child {
+        font-weight: bold;
+    }
+
+    .review-form-container {
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .review-form-container form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .review-form-container label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .review-form-container input[type="text"],
+    .review-form-container textarea {
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    .review-form-container input[type="submit"] {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+    .review-form-container input[type="submit"]:hover {
+        background-color: #5c636a;
+    }
+
+</style>
+<div class="movie-container">
+    <div class="movie-card">
+        <div class="movie-details">
+            <span class="poster-container">
+                <img class="poster" src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster">
+            </span>
+            <span class="details-container">
+                <h3 class="title">{{ movie.title }}</h3>
+                <p class="genre">Genre: {{ movie.genre }}</p>
+                <p class="views">Views: {{ movie.views }}</p>
+                <p class="avg-rating">Average Rating: {{ movie.avg_rating }}</p>
+                <form method="post" action="{% url 'CriticCorner:wishlist' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="user" value="{{ request.user }}">
+                    <input type="hidden" name="movie" value="{{ movie.pk }}">
+                    <button type="submit" class="submit-btn">Add to Wishlist</button>
+                </form>
+            </span>
+            <span>
+                <iframe width="560" height="315" src="{{ movie.url }}" frameborder="0" allowfullscreen></iframe>
+            </span>
+        </div>
+        <div class="reviews">
+            <h4>Reviews:</h4>
+            <ul>
+                {% for review in reviews %}
+                    <li>
+                        <p>Posted by: {{ review.user }}</p>
+                        <p>{{ review.content }}</p>
+                        <p>Rating: {{ review.rating }}</p>
+                    </li>
+                {% empty %}
+                    <li>No reviews yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% if user.is_authenticated %}
+        <div class="review-form-container">
+            <h4>Add a Review:</h4>
+            <form action="{% url 'CriticCorner:add_review' %}" method="post">
+                {% csrf_token %}
+                <label for="review_content">Review:</label>
+                <textarea id="review_content" name="content" rows="4" cols="50" required></textarea>
+                <label for="review_rating">Rating (out of 5):</label>
+                <input type="number" step="any" id="review_rating" name="rating" min="1" max="5" required>
+                <input type="submit" value="Submit Review">
+            </form>
+        </div>
+        {% endif %}
     </div>
 </div>
-{% endfor %}
+
 {% endblock %}

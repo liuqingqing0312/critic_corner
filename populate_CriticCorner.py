@@ -11,16 +11,16 @@ from CriticCorner.models import Movie, Review, UserProfile, User, WishList
 
 def populate():
     movies = [{'title': "hound of winchester",
-               'url': 'https://www.youtube.com/watch?v=xfsOSCeXOeA',
+               'url': 'https://www.youtube.com/embed/xfsOSCeXOeA',
                'genre': Movie.HORROR},
                {'title': "count of transylvania",
-               'url': 'https://www.youtube.com/watch?v=xfsOSCeXOeA',
+               'url': 'https://www.youtube.com/embed/xfsOSCeXOeA',
                'genre': Movie.HORROR},
                {'title': "hound of loversville",
-               'url': 'https://www.youtube.com/watch?v=xfsOSCeXOeA',
+               'url': 'https://www.youtube.com/embed/xfsOSCeXOeA',
                'genre': Movie.ROMANCE},
                {'title': "hound of action",
-               'url': 'https://www.youtube.com/watch?v=xfsOSCeXOeA',
+               'url': 'https://www.youtube.com/embed/xfsOSCeXOeA',
                'genre': Movie.ACTION},
                ]
 
