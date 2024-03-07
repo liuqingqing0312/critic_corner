@@ -1,0 +1,55 @@
+{% extends 'CriticCorner/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Account
+{% endblock %}
+
+{% block body_block %}
+<style>
+    .account-section {
+        margin: 20px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .account-info, .user-reviews, .user-wishlist, .user-history {
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        color: #333;
+    }
+
+    .info-item {
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="container">
+    <div class="account-info account-section">
+        <h2>Account Information</h2>
+        <div class="info-item">Username: {{ user.username }}</div>
+        <div class="info-item">Email: {{ user.email }}</div>
+        <!-- Add more info -->
+    </div>
+
+    <div class="user-reviews account-section">
+        <h2>My Reviews</h2>
+        <!-- User's reviews -->
+    </div>
+
+    <div class="user-wishlist account-section">
+        <h2>My Wishlist</h2>
+        <!-- User's wishlists -->
+        {% include 'wishlist.html' %}
+    </div>
+
+    <div class="user-history account-section">
+        <h2>Viewing History</h2>
+        <!-- User's browse history -->
+    </div>
+</div>
+{% endblock %}

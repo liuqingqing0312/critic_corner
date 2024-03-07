@@ -1,0 +1,54 @@
+{% extends 'CriticCorner/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Search
+{% endblock %}
+
+{% block body_block %}
+<style>
+    .search-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80vh;
+    }
+
+    .search-box {
+        width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .search-input {
+        width: 70%;
+        padding: 10px;
+        font-size: 20px;
+        border: 2px solid #ddd;
+        border-radius: 5px 0 0 5px;
+        outline: none;
+    }
+
+    .search-button {
+        padding: 10px 20px;
+        font-size: 20px;
+        border: none;
+        background-color: #333;
+        color: white;
+        cursor: pointer;
+        border-radius: 0 5px 5px 0;
+    }
+
+    .search-button:hover {
+        background-color: #555;
+    }
+</style>
+
+<div class="search-container">
+    <div class="search-box">
+        <input type="text" class="search-input" placeholder="Search for movies, actors, directors...">
+        <button class="search-button">Search</button>
+    </div>
+</div>
+{% endblock %}

@@ -1,11 +1,12 @@
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.urls import reverse
+from django.contrib.auth import login, authenticate
 from CriticCorner.models import Movie, UserProfile, Review, WishList
+from CriticCorner.forms import UserForm, UserProfileForm
 
 def about(request):
     return render(request, 'CriticCorner/about.html')
@@ -13,7 +14,7 @@ def about(request):
 def home(request):
     return render(request, 'CriticCorner/home.html')
 
-def login(request):
+def activate(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -21,7 +22,7 @@ def login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return redirect(reverse('CriticCorner/home.html'))
+                return redirect(reverse('home'))
             else:
                 return HttpResponse("Your CriticCorner account is disabled.")
         else:
@@ -67,6 +68,7 @@ def contact(request):
 def movie(request):
     return render(request, 'CriticCorner/movie.html')
 
+@login_required
 def wishlist(request):
     if request.user.is_authenticated:
         wishlist_items = WishList.objects.filter(user_profile=request.user.userprofile)
