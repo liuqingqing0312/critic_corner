@@ -65,6 +65,6 @@ class WishList(models.Model):
     movie = models.ForeignKey(Movie, related_name='contains',on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.user.__str__() + self.movie.__str__()
+        return self.user_profile.__str__() + self.movie.__str__()
 
 

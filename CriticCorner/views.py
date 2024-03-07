@@ -68,6 +68,8 @@ def contact(request):
 def movie(request):
     return render(request, 'CriticCorner/movie.html')
 
+@login_required
 def wishlist(request):
-    wishlist_items = WishList.objects.filter(user=request.user)
-    return render(request, 'wishlist.html', {'wishlist_items': wishlist_items})
+    user_profile = UserProfile.objects.filter(user=request.user)[0]
+    wishlist_items = WishList.objects.filter(user_profile=user_profile)
+    return render(request, 'CriticCorner/wishlist.html', {'wishlist_items': wishlist_items})

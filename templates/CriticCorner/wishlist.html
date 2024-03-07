@@ -10,7 +10,7 @@
     <div>
         <img src="{{ item.movie.poster.url }}" alt="{{ item.movie.title }} Poster">
         <h3>{{ item.movie.title }}</h3>
-        <form method="post" action="{% url 'remove_from_wishlist' item.id %}">
+        <form method="post" action=".">
             {% csrf_token %}
             <button type="submit">Remove from Wishlist</button>
         </form>
