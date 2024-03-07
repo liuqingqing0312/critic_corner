@@ -6,34 +6,32 @@
 {% endblock %}
 
 {% block body_block %}
-<style>
-    img {
-        width: 300px;
-        height: auto;
-        margin-left: 50px;
-    }
-
-    .movie-container {
-        display: flex; 
-    }
-
-    .info {
-        margin-left: 20px;
-    }
-</style>
-<div class="movie-container">
-    <span class="poster">
-        <img src="{% static 'harry_potter.jpeg' %}" alt="{{ movie.title }} Poster">
-    </span>
-    <span class="info">
-        <h3>Harry Potter</h3>
-        <h5>Released date: 2024.03.05</h5>
-        <h5>Genre: Horror</h5>
-        <h5>Rate: 5.0</h5>
-        <form method="post" action="{% url 'wishlist' movie.title %}">
+{% for movie in movies %}
+<div class="movie-card">
+    <div class="movie-details">
+        <a href="{% url 'CriticCorner:movie' title=movie.title %}">
+            <img class="poster" src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster">
+        </a>
+        <h3 class="title">{{ movie.title }}</h3>
+        <p class="genre">Genre: {{ movie.genre }}</p>
+        <p class="views">Views: {{ movie.views }}</p>
+        <p class="avg-rating">Average Rating: {{ movie.avg_rating }}</p>
+        
+        <form method="post" action="{% url 'CriticCorner:add_review' %}">
             {% csrf_token %}
-            <button type="submit">Add to Wishlist</button>
+            <input type="hidden" name="user" value="{{ request.user }}">
+            <input type="hidden" name="movie" value="{{ movie.pk }}">
+            <input type="number" name="rating" min="1" max="5" required>
+            <button type="submit" class="submit-btn">Rate Movie</button>
         </form>
-    </span>
+        
+        <form method="post" action="{% url 'CriticCorner:add_wishlist' %}">
+            {% csrf_token %}
+            <input type="hidden" name="user" value="{{ request.user }}">
+            <input type="hidden" name="movie" value="{{ movie.pk }}">
+            <button type="submit" class="submit-btn">Add to Wishlist</button>
+        </form>
+    </div>
 </div>
+{% endfor %}
 {% endblock %}

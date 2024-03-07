@@ -7,18 +7,16 @@
 
 {% block body_block %}
 {% for movie in movies %}
-    <div>
-        <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster">
-        <h3>{{ movie.title }}</h3>
-        <p>Genre: {{ movie.genre }}</p>
-        <p>Release Date: {{ movie.release_date }}</p>
-        <p>Views: {{ movie.views }}</p>
-        <p>Ratings: {{ movie.ratings }}</p>
-        <p>Average Rating: {{ movie.avg_rating }}</p>
-        <form method="post" action="{% url 'remove_from_wishlist' movie.title %}">
-            {% csrf_token %}
-            <button type="submit">Remove from Wishlist</button>
-        </form>
+    <div class="movie-card">
+        <img class="poster" src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster">
+        <div class="movie-details">
+            <h3 class="title">{{ movie.title }}</h3>
+            <p class="genre">Genre: {{ movie.genre }}</p>
+            <p class="release-date">Release Date: {{ movie.release_date }}</p>
+            <p class="views">Views: {{ movie.views }}</p>
+            <p class="ratings">Ratings: {{ movie.ratings }}</p>
+            <p class="avg-rating">Average Rating: {{ movie.avg_rating }}</p>
+        </div>
     </div>
 {% endfor %}
 {% endblock %}

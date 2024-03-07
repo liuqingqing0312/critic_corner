@@ -37,138 +37,42 @@ Home
 <div>
     <h5 class="title">Most Popular</h5>
     <div class="container">
-    <div >
-        <a href="{% url 'CriticCorner:about' %}">
-            <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-            <p class="name">Harry Potter</p>
-        </a>
+        {% for movie in movies %}
+        <div>
+            <a href="{% url 'CriticCorner:movie' title=movie.title %}">
+                <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster" class="poster">
+                <p class="name">{{ movie.title }}</p>
+            </a>
+        </div>
+        {% endfor %}
     </div>
-    <div>
-        <a href="{% url 'CriticCorner:about' %}">
-            <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-            <p class="name">Harry Potter</p>
-        </a>
-    </div>
-    <div>
-        <a href="{% url 'CriticCorner:about' %}">
-            <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-            <p class="name">Harry Potter</p>
-        </a>
-    </div>
-    <div>
-        <a href="{% url 'CriticCorner:about' %}">
-            <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-            <p class="name">Harry Potter</p>
-        </a>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-  </div>
 </div>
 
 <div>
     <h5 class="title">New Released</h5>
     <div class="container">
-    <div >
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
+        {% for movie in movies %}
+        <div>
+            <a href="{% url 'CriticCorner:movie' movie.title %}">
+                <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster" class="poster">
+                <p class="name">{{ movie.title }}</p>
+            </a>
+        </div>
+        {% endfor %}
   </div>
 </div>
 
 <div>
     <h5 class="title">TOP 10 Rated</h5>
     <div class="container">
-    <div >
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
-    <div>
-        <img src="{% static 'harry_potter.jpeg' %}" alt="Harry Potter" class="poster">
-        <p class="name">Harry Potter</p>
-    </div>
+        {% for movie in movies %}
+        <div>
+            <a href="{% url 'CriticCorner:movie' movie.title %}">
+                <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster" class="poster">
+                <p class="name">{{ movie.title }}</p>
+            </a>
+        </div>
+        {% endfor %}
   </div>
 </div>
 {% endblock %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
@@ -7,12 +7,14 @@ from django.urls import reverse
 from django.contrib.auth import login, authenticate
 from CriticCorner.models import Movie, UserProfile, Review, WishList
 from CriticCorner.forms import UserForm, UserProfileForm
+from populate_CriticCorner import populate
 
 def about(request):
     return render(request, 'CriticCorner/about.html')
 
 def home(request):
-    return render(request, 'CriticCorner/home.html')
+    movies = Movie.objects.all()
+    return render(request, 'CriticCorner/home.html', {'movies': movies})
 
 def activate(request):
     if request.method == 'POST':
@@ -65,8 +67,9 @@ def user_logout(request):
 def contact(request):
     return render(request, 'CriticCorner/contact.html')
 
-def movie(request):
-    return render(request, 'CriticCorner/movie.html')
+def movie(request, title):
+    movie = get_object_or_404(Movie, title=title)
+    return render(request, 'CriticCorner/movie.html', {'movie': movie})
 
 @login_required
 def wishlist(request):
