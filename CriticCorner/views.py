@@ -68,5 +68,8 @@ def movie(request):
     return render(request, 'CriticCorner/movie.html')
 
 def wishlist(request):
-    wishlist_items = WishList.objects.filter(user=request.user)
-    return render(request, 'wishlist.html', {'wishlist_items': wishlist_items})
+    if request.user.is_authenticated:
+        wishlist_items = WishList.objects.filter(user_profile=request.user.userprofile)
+        return render(request, 'CriticCorner/wishlist.html', {'wishlist_items': wishlist_items})
+    else:
+        return render(request, 'CriticCorner/wishlist.html', {'wishlist_items': []})

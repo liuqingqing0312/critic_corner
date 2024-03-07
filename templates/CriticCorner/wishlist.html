@@ -6,16 +6,16 @@
 {% endblock %}
 
 {% block body_block %}
-{% for item in wishlist_items %}
+{% for movie in movies %}
     <div>
-        <img src="{{ item.movie.poster.url }}" alt="{{ item.movie.title }} Poster">
-        <h3>{{ item.movie.title }}</h3>
-        <p>Genre: {{ item.movie.get_genre_display }}</p>
-        <p>Release Date: {{ item.movie.release_date }}</p>
-        <p>Views: {{ item.movie.views }}</p>
-        <p>Ratings: {{ item.movie.ratings }}</p>
-        <p>Average Rating: {{ item.movie.avg_rating }}</p>
-        <form method="post" action="{% url 'remove_from_wishlist' item.movie.title %}">
+        <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster">
+        <h3>{{ movie.title }}</h3>
+        <p>Genre: {{ movie.get_genre_display }}</p>
+        <p>Release Date: {{ movie.release_date }}</p>
+        <p>Views: {{ movie.views }}</p>
+        <p>Ratings: {{ movie.ratings }}</p>
+        <p>Average Rating: {{ movie.avg_rating }}</p>
+        <form method="post" action="{% url 'remove_from_wishlist' movie.title %}">
             {% csrf_token %}
             <button type="submit">Remove from Wishlist</button>
         </form>
