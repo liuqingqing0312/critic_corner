@@ -10,7 +10,12 @@
     <div>
         <img src="{{ item.movie.poster.url }}" alt="{{ item.movie.title }} Poster">
         <h3>{{ item.movie.title }}</h3>
-        <form method="post" action="{% url 'remove_from_wishlist' item.id %}">
+        <p>Genre: {{ item.movie.get_genre_display }}</p>
+        <p>Release Date: {{ item.movie.release_date }}</p>
+        <p>Views: {{ item.movie.views }}</p>
+        <p>Ratings: {{ item.movie.ratings }}</p>
+        <p>Average Rating: {{ item.movie.avg_rating }}</p>
+        <form method="post" action="{% url 'remove_from_wishlist' item.movie.title %}">
             {% csrf_token %}
             <button type="submit">Remove from Wishlist</button>
         </form>

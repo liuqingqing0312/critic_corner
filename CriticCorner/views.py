@@ -68,5 +68,5 @@ def movie(request):
     return render(request, 'CriticCorner/movie.html')
 
 def wishlist(request):
-    wishlist_items = Wishlist.objects.filter(user=request.user)
+    wishlist_items = WishList.objects.filter(user=request.user)
     return render(request, 'wishlist.html', {'wishlist_items': wishlist_items})
