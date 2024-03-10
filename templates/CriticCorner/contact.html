@@ -1,23 +1,48 @@
 {% extends 'CriticCorner/base.html' %}
-{% load staticfiles %}
-
-{% block title %}
-    Contact
+{% block title_block %}
+    Contact Us
 {% endblock %}
 
 {% block body_block %}
 <style>
-    .feedback {
-        text-align: center;
+    .contact-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
     }
 
+    .contact-info {
+        margin-bottom: 20px;
+    }
+
+    .contact-info h3 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .contact-info p {
+        color: #666;
+    }
 </style>
-<form action="{% url 'CriticCorner:contact' %}" method="post">
-    {% csrf_token %}
-    <div class="feedback">
-        <h3>Tell us about your issues and we'll find the BEST solution for you.</h3>
-        <textarea name="feedback" cols="100" rows="10" placeholder="Enter your feedback"></textarea><br>
-        <input type="submit" value="Submit">
+
+<div class="contact-container">
+    <h2>Contact Us</h2>
+
+    <div class="contact-info">
+        <h3>Phone Numbers</h3>
+        <p>Main: +1 123-456-7890</p>
+        <p>Toll-Free: +1 800-123-4567</p>
     </div>
-</form>
+
+    <div class="contact-info">
+        <h3>Email Addresses</h3>
+        <p>General Inquiries: info@example.com</p>
+        <p>Customer Support: support@example.com</p>
+    </div>
+
+    <p>Feel free to reach out to us using the provided contact information. We'll be happy to assist you!</p>
+</div>
 {% endblock %}

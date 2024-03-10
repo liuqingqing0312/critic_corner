@@ -21,9 +21,20 @@ from critic_corner import settings
 from django.conf import settings  # new
 from django.urls import path, include  # new
 from django.conf.urls.static import static  # new
+from registration.backends.simple.views import RegistrationView 
+from django.urls import reverse
+from django.contrib.auth import views as auth_views
+
+class MyRegistrationView(RegistrationView): 
+    def get_success_url(self, user):
+        return reverse('rango:register_profile')
 
 urlpatterns = [
     path('', views.home, name='home'),
     path('CriticCorner/', include('CriticCorner.urls')),
     path('admin/', admin.site.urls),
+    path('accounts/', include('registration.backends.simple.urls')),
+    path('accounts/login/', auth_views.LoginView.as_view(), name='auth_login'),
+    path('accounts/logout/', auth_views.LogoutView.as_view(), name='auth_logout'),
+    path('accounts/register/', RegistrationView.as_view(), name='registration_register'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

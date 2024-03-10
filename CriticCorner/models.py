@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 import datetime
 from django import utils
 import glob
+from six import python_2_unicode_compatible
 
 MIN_RATING_VALUE = 0
 MAX_RATING_VALUE = 5

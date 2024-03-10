@@ -141,7 +141,7 @@ REGISTRATION_OPEN = True
 REGISTRATION_AUTO_LOGIN = True
 
 # The URL that Django redirects users to after logging in.
-LOGIN_REDIRECT_URL = 'rango:index'
+LOGIN_REDIRECT_URL = 'CriticCorner:home'
 
 # The page users are directed to if they are not logged in.
 LOGIN_URL = 'auth_login'

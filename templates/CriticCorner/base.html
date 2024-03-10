@@ -64,6 +64,15 @@
             display: block;
         }
 
+        .navbar li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: normal;
+        }
+
+        .navbar li a.active {
+            font-weight: bold; /* Change 'bold' to 'bolder' or increase font-weight value */
+        }
     </style>
 </head>
 <body>
@@ -75,10 +84,10 @@
             {% if user.is_authenticated %}
               <a href="#">Account</a>
               <a href="{% url 'CriticCorner:wishlist' %}">Wishlist</a>
-              <a href="{% url 'CriticCorner:logout' %}">Logout</a>
+              <a href="{% url 'auth_logout' %}?next={% url 'auth_logout' %}">Logout</a>
             {% else %}
-              <a href="{% url 'CriticCorner:register' %}">Sign Up</a>
-              <a href="{% url 'CriticCorner:login' %}">Login</a>
+              <a href="{% url 'registration_register' %}">Sign Up</a>
+              <a href="{% url 'auth_login' %}">Login</a>
             {% endif %}
             </div>
             <img src="{% static 'user.png' %}" alt="User Profile" class="user">
@@ -110,5 +119,16 @@
     </div>
     <script src="{% static 'bootstrap/jquery-3.7.1.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var currentUrl = window.location.pathname;
+            var links = document.querySelectorAll('.navbar li a');
+            links.forEach(function (link) {
+                if (link.getAttribute('href') === currentUrl) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -13,3 +13,12 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('phone_number', 'picture',)
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['content', 'rating']
+        labels = {
+            'content': 'Review',
+            'rating': 'Rating (out of 5)',
+        }
