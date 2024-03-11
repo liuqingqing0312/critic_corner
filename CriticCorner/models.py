@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 import datetime
 from django import utils
 import glob
+from django.template.defaultfilters import slugify
 from six import python_2_unicode_compatible
 
 MIN_RATING_VALUE = 0
@@ -38,6 +39,11 @@ class Movie(models.Model):
     poster = models.ImageField(upload_to = 'media/posters')
     release_date = models.DateField(default=utils.timezone.now)
     avg_rating = models.DecimalField(max_digits=3, decimal_places=1, default=0.0, validators=[MinValueValidator(MIN_RATING_VALUE), MaxValueValidator(MAX_RATING_VALUE)])
+    slug = models.SlugField(unique=True)
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title + str(self.release_date)[:10])
+        super(Movie, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
