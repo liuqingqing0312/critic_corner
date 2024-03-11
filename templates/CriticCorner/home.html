@@ -6,38 +6,13 @@ Home
 {% endblock %}
 
 {% block body_block %}
+<link href="{% static 'styles/home.css' %}" rel="stylesheet">
 <style>
-    .title {
-        text-align: left;
-        margin-left: 50px;
-    }
-    .poster {
-        width: 200px;
-        height: auto;
-        border-radius: 8px;
-    }
-
-    .name {
-        text-align: center;
-        color: black;
-        text-decoration: none;
-    }
-
-    a {
-        text-decoration: none;
-    }
-
-    .container {
-        overflow-x: auto;
-    }
-
-    .container > div {
-        margin-right: 10px;
-    }
+    
 </style>
 <div>
     <h5 class="title">Most Popular</h5>
-    <div class="container">
+    <div class="movie-container">
         {% for movie in movies %}
         <div>
             <a href="{% url 'CriticCorner:movie' title=movie.title %}">
@@ -51,7 +26,7 @@ Home
 
 <div>
     <h5 class="title">New Released</h5>
-    <div class="container">
+    <div class="movie-container">
         {% for movie in movies %}
         <div>
             <a href="{% url 'CriticCorner:movie' movie.title %}">
@@ -65,7 +40,7 @@ Home
 
 <div>
     <h5 class="title">TOP 10 Rated</h5>
-    <div class="container">
+    <div class="movie-container">
         {% for movie in movies %}
         <div>
             <a href="{% url 'CriticCorner:movie' movie.title %}">
