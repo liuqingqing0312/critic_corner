@@ -1,0 +1,61 @@
+.wishlist {
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+.wishlist h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.wishlist-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.wishlist-item {
+    text-align: center;
+}
+
+.poster {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.name {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #444;
+}
+
+.name:hover {
+    color: #222;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.remove-btn {
+    background-color: #6c757d; /* Red color */
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.remove-btn:hover {
+    background-color: #5c636a; /* Darker red color on hover */
+}
+
+/* Adjustments to make the button inline with the text */
+.remove-form {
+    display: inline-block;
+}

@@ -1,0 +1,124 @@
+.movie-container {
+    display: flex;
+    flex-wrap: wrap;
+    }
+
+.movie-card {
+    width: 1500px; /* Set a fixed width for each movie card */
+    margin-left: 30px; /* Add some margin between movie cards */
+}
+
+.movie-details {
+    display: flex;
+    flex-direction: row; /* Arrange details horizontally */
+}
+
+.poster-container {
+    margin-right: 70px; /* Add some space between poster and details */
+    margin-left: 50px;
+}
+
+.poster {
+    width: 250px; /* Set a fixed width for the poster */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.details-container {
+    flex-grow: 1; /* Allow details to grow to fill available space */
+    font-size: 20px;
+}
+
+.submit-btn {
+    background-color: #6c757d; /* Green background */
+    border: none;
+    color: white; /* White text */
+    padding: 10px 20px; /* Padding */
+    text-align: center; /* Center text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Display as inline-block */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Cursor on hover */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.submit-btn:hover {
+    background-color: #5c636a; /* Darker green on hover */
+}
+
+iframe {
+    margin-left: 30px;
+}
+
+.reviews {
+    margin-top: 30px;
+}
+
+.reviews h4 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.reviews ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.reviews li {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.reviews li p {
+    margin: 5px 0;
+}
+
+.reviews li p:first-child {
+    font-weight: bold;
+}
+
+.review-form-container {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.review-form-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.review-form-container label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.review-form-container input[type="text"],
+.review-form-container textarea {
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.review-form-container input[type="submit"] {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.review-form-container input[type="submit"]:hover {
+    background-color: #5c636a;
+}
+
+iframe {
+    margin-right: 70px;
+}

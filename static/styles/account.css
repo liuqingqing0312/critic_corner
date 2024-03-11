@@ -1,0 +1,19 @@
+.account-section {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.account-info, .user-reviews, .user-wishlist, .user-history {
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #333;
+}
+
+.info-item {
+    margin-bottom: 10px;
+}
