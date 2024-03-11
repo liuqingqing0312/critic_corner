@@ -22,9 +22,8 @@ def home(request):
 def contact(request):
     return render(request, 'CriticCorner/contact.html')
 
-def movie(request, title):
-    decoded_title = unquote_plus(title)
-    movie = Movie.objects.filter(title=decoded_title).first()
+def movie(request, slug):
+    movie = Movie.objects.filter(slug=slug).first()
     reviews = Review.objects.filter(movie=movie)
     return render(request, 'CriticCorner/movie.html', {'movie': movie, 'reviews': reviews})
 
@@ -43,9 +42,9 @@ def wishlist(request):
             wishlist_items = WishList.objects.filter(user_profile=user_profile)
         except UserProfile.DoesNotExist:
             wishlist_items = []  # Handle the case where the user profile does not exist
-        return render(request, 'CriticCorner/wishlist.html', {'wishlist_items': wishlist_items})
+        return render(request, 'CriticCorner:wishlist', {'wishlist_items': wishlist_items})
     else:
-        return render(request, 'CriticCorner/wishlist.html', {'wishlist_items': []})
+        return render(request, 'CriticCorner:wishlist', {'wishlist_items': []})
 
 @login_required
 def add_review(request):
