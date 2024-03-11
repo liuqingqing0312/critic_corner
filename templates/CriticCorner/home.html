@@ -29,7 +29,7 @@ Home
     <div class="movie-container">
         {% for movie in movies %}
         <div>
-            <a href="{% url 'CriticCorner:movie' movie.title %}">
+            <a href="{% url 'CriticCorner:movie' slug=movie.slug %}">
                 <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster" class="poster">
                 <p class="name">{{ movie.title }}</p>
             </a>
@@ -43,7 +43,7 @@ Home
     <div class="movie-container">
         {% for movie in movies %}
         <div>
-            <a href="{% url 'CriticCorner:movie' movie.title %}">
+            <a href="{% url 'CriticCorner:movie' slug=movie.slug %}">
                 <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster" class="poster">
                 <p class="name">{{ movie.title }}</p>
             </a>

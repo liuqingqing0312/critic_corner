@@ -1,0 +1,14 @@
+{% extends 'CriticCorner/base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    NoReviews
+{% endblock %}
+
+{% block body_block %}
+<link href="{% static 'styles/review_restrict.css' %}" rel="stylesheet">
+
+<div class="message-container">
+    <h3 class="message">You have already posted a review for this movie</h3>
+</div>
+{% endblock %}

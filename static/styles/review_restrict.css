@@ -1,0 +1,14 @@
+.message-container {
+    margin: 50px auto;
+    width: 50%;
+    text-align: center;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.message {
+    font-size: 18px;
+    color: #333;
+}

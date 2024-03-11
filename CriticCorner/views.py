@@ -1,9 +1,10 @@
+from audioop import avg
 from urllib.parse import unquote_plus
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from django.contrib.auth import login, authenticate
 from CriticCorner.models import Movie, UserProfile, Review, WishList
@@ -25,7 +26,9 @@ def contact(request):
 def movie(request, slug):
     movie = Movie.objects.filter(slug=slug).first()
     reviews = Review.objects.filter(movie=movie)
-    return render(request, 'CriticCorner/movie.html', {'movie': movie, 'reviews': reviews})
+    total_rating = sum(review.rating for review in reviews)
+    average_rating = total_rating / reviews.count() if reviews.count() > 0 else 0
+    return render(request, 'CriticCorner/movie.html', {'movie': movie, 'reviews': reviews, 'average_rating': average_rating})
 
 @receiver(post_save, sender=User, dispatch_uid='save_new_user_profile')
 def save_profile(sender, instance, created, **kwargs):
@@ -42,9 +45,9 @@ def wishlist(request):
             wishlist_items = WishList.objects.filter(user_profile=user_profile)
         except UserProfile.DoesNotExist:
             wishlist_items = []  # Handle the case where the user profile does not exist
-        return render(request, 'CriticCorner:wishlist', {'wishlist_items': wishlist_items})
+        return render(request, 'CriticCorner/wishlist.html', {'wishlist_items': wishlist_items})
     else:
-        return render(request, 'CriticCorner:wishlist', {'wishlist_items': []})
+        return render(request, 'CriticCorner/wishlist.html', {'wishlist_items': []})
 
 @login_required
 def add_review(request):
@@ -67,6 +70,12 @@ def add_review(request):
                 # Redirect or display an error message
                 return HttpResponse("Movie not found")
             
+            # Check if the user has already reviewed this movie
+            existing_review = Review.objects.filter(user=request.user.userprofile, movie=movie).first()
+            if existing_review:
+                # Optionally, you can provide feedback that the user has already reviewed this movie
+                return redirect('CriticCorner:review_restrict')
+            
             # Create review object with movie object
             review = Review.objects.create(
                 user=request.user.userprofile,  # Assuming user is authenticated
@@ -76,7 +85,7 @@ def add_review(request):
             )
             
             # Redirect to the movie page
-            return redirect('CriticCorner:movie', title=movie_title)
+            return redirect('CriticCorner:movie', slug=movie.slug)
         else:
             # Handle the case where movie_title is None
             return HttpResponse("Movie title is missing")
@@ -93,16 +102,20 @@ def add_wishlist(request):
         # Retrieve user profile
         user_profile = get_object_or_404(UserProfile, user=user)
         
+        # Get the movie object
+        movie = get_object_or_404(Movie, pk=movie_id)
+        
         # Check if the movie is already in the user's wishlist
-        if WishList.objects.filter(user_profile=user_profile, movie_id=movie_id).exists():
+        if WishList.objects.filter(user_profile=user_profile, movie=movie).exists():
             # Optionally, you can provide feedback that the movie is already in the wishlist
             return redirect('CriticCorner:wishlist')  # Redirect to home or wherever you want
             
         # Add the movie to the user's wishlist
-        wishlist_item = WishList.objects.create(user_profile=user_profile, movie_id=movie_id)
+        wishlist_item = WishList.objects.create(user_profile=user_profile, movie=movie)
         
         # Optionally, you can provide feedback that the movie has been added to the wishlist
-        return redirect('CriticCorner:wishlist')  # Redirect to home or wherever you want
+        # Redirect to the wishlist with the movie's slug
+        return redirect('CriticCorner:wishlist')
     else:
         # Handle GET request (display wishlist or redirect to home)
         return redirect('CriticCorner:home')  # Redirect to home or wherever you want
@@ -117,3 +130,7 @@ def remove_from_wishlist(request):
         wishlist_item = get_object_or_404(WishList, user_profile=user_profile, movie_id=movie_id)
         wishlist_item.delete()
     return redirect('CriticCorner:wishlist')
+
+@login_required
+def review_restrict(request):
+    return render(request, 'CriticCorner/review_restrict.html')

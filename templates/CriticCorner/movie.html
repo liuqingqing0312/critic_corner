@@ -18,7 +18,7 @@
                 <h3 class="title">{{ movie.title }}</h3>
                 <p class="genre">Genre: {{ movie.genre }}</p>
                 <p class="views">Views: {{ movie.views }}</p>
-                <p class="avg-rating">Average Rating: {{ movie.avg_rating }}</p>
+                <p class="avg-rating">Average Rating: {{ average_rating }}</p>
                 <form method="post" action="{% url 'CriticCorner:add_wishlist' %}">
                     {% csrf_token %}
                     <input type="hidden" name="user" value="{{ request.user }}">
@@ -60,5 +60,4 @@
         {% endif %}
     </div>
 </div>
-
 {% endblock %}

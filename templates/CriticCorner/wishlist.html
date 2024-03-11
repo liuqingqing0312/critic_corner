@@ -13,7 +13,7 @@
     <div class="wishlist-items">
         {% for item in wishlist_items %}
         <div class="wishlist-item">
-            <a href="{% url 'CriticCorner:movie' title=item.movie.title %}">
+            <a href="{% url 'CriticCorner:movie' slug=item.movie.slug %}">
                 <img src="{{ item.movie.poster.url }}" alt="{{ item.movie.title }} Poster" class="poster">
                 <p class="name">{{ item.movie.title }}</p>
             </a>
