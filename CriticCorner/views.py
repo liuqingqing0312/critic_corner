@@ -23,6 +23,8 @@ def home(request):
 def contact(request):
     return render(request, 'CriticCorner/contact.html')
 
+def search(request):
+    return render(request, 'CriticCorner/search.html')
 def movie(request, slug):
     movie = Movie.objects.filter(slug=slug).first()
     reviews = Review.objects.filter(movie=movie)
