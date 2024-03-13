@@ -100,3 +100,16 @@ def add_review(request):
     else:
         # Handle GET requests if needed (optional)
         pass
+
+@login_required
+def account_view(request):
+    return render(request, 'account.html', {'user': request.user})
+
+def search_view(request):
+    query = request.GET.get('q', '')
+    if query:
+        results = Movie.objects.filter(title__icontains=query)
+    else:
+        results = []
+
+    return render(request, 'search.html', {'results': results, 'query': query})
