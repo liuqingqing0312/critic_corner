@@ -12,6 +12,7 @@ from CriticCorner.forms import UserForm, UserProfileForm, ReviewForm
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from CriticCorner.helpers.TMBDactions import *
 
 def about(request):
     return render(request, 'CriticCorner/about.html')
