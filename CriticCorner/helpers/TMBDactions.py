@@ -26,13 +26,20 @@ def get_movies_by_search(query: str) -> list:
     
     return [mov for mov in related]
 
-def get_genre_by_id(id: int) -> str:
+def get_genres_by_id(id: int) -> str:
+    """"""
     if id in genres:
         return genres[id]
     else:
         return "No such genre id"
 
+def get_trailer_url_by_id(id: int) -> str:
+    """returns youtube video url."""
+    return "https://www.youtube.com/embed/"+dict([chungus for chungus in movie.videos(id)][0])["key"]
+
+# you should never need to get movie info from database since if you have id
+# you would also have all other relevant info stored locally
 if __name__ == "__main__":
     #test script
     # print(get_movies_by_search("chungus"))
-    print(get_genre_by_id(10000))
+    print(get_trailer_url_by_id(147))
