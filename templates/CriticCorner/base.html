@@ -5,11 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        CriticCorner
-        {% block title_block %}
-        {% endblock %}
-    </title>
+    <title>CriticCorner - {% block title_block %}{% endblock %}</title>
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <style>
         .user {
@@ -64,6 +60,13 @@
             display: block;
         }
 
+        /* 定义新的样式 */
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #f8f9fa;
+            margin-top: 50px;
+        }
     </style>
 </head>
 <body>
@@ -84,30 +87,37 @@
             <img src="{% static 'user.png' %}" alt="User Profile" class="user">
         </div>
     </header>
-    <div class="container">
-    <nav class="navbar navbar-expand-sm">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'CriticCorner:home' %}">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'CriticCorner:about' %}">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'CriticCorner:contact' %}">Contact Us</a>
-          </li>
-        </ul>
 
-        <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" style="width: 500px;">
-            <button class="btn btn-secondary" type="submit">Search</button>
-          </form>
-    </nav>
+    <div class="container">
+        <nav class="navbar navbar-expand-sm">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'CriticCorner:home' %}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'CriticCorner:about' %}">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'CriticCorner:contact' %}">Contact Us</a>
+              </li>
+            </ul>
+
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" style="width: 500px;">
+                <button class="btn btn-secondary" type="submit">Search</button>
+            </form>
+        </nav>
     </div>
+
     <div>
         {% block body_block %}
         {% endblock %}
     </div>
+
+    <footer>
+        <p>&copy; 2024 CriticCorner. All rights reserved.</p>
+    </footer>
+
     <script src="{% static 'bootstrap/jquery-3.7.1.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 </body>

@@ -1,78 +1,84 @@
 {% extends 'CriticCorner/base.html' %}
 {% load staticfiles %}
 
-{% block title %}
-Home
+{% block title_block %}
+    Home
 {% endblock %}
 
 {% block body_block %}
 <style>
-    .title {
+    .section-title {
         text-align: left;
         margin-left: 50px;
     }
-    .poster {
+
+    .movie-container {
+        display: flex;
+        overflow-x: auto;
+        margin-bottom: 20px;
+    }
+
+    .movie-card {
+        margin-right: 10px;
+        text-align: center;
+    }
+
+    .movie-poster {
         width: 200px;
         height: auto;
     }
 
-    .name {
-        text-align: center;
+    .movie-name {
         color: black;
         text-decoration: none;
     }
 
-    a {
-        text-decoration: none;
-    }
-
-    .container {
-        overflow-x: auto;
-    }
-
-    .container > div {
-        margin-right: 10px;
+    .movie-name:hover {
+        text-decoration: underline;
     }
 </style>
+
 <div>
-    <h5 class="title">Most Popular</h5>
-    <div class="container">
-        {% for movie in movies %}
-        <div>
-            <a href="{% url 'CriticCorner:movie' title=movie.title %}">
-                <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster" class="poster">
-                <p class="name">{{ movie.title }}</p>
-            </a>
+    <div class="section">
+        <h5 class="section-title">Most Popular</h5>
+        <div class="movie-container">
+            {% for movie in popular_movies %}
+            <div class="movie-card">
+                <a href="{% url 'CriticCorner:movie' title=movie.title %}" class="movie-name">
+                    <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster" class="movie-poster">
+                    <p>{{ movie.title }}</p>
+                </a>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
-</div>
 
-<div>
-    <h5 class="title">New Released</h5>
-    <div class="container">
-        {% for movie in movies %}
-        <div>
-            <a href="{% url 'CriticCorner:movie' movie.title %}">
-                <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster" class="poster">
-                <p class="name">{{ movie.title }}</p>
-            </a>
+    <div class="section">
+        <h5 class="section-title">New Released</h5>
+        <div class="movie-container">
+            {% for movie in new_released_movies %}
+            <div class="movie-card">
+                <a href="{% url 'CriticCorner:movie' title=movie.title %}" class="movie-name">
+                    <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster" class="movie-poster">
+                    <p>{{ movie.title }}</p>
+                </a>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-  </div>
-</div>
+    </div>
 
-<div>
-    <h5 class="title">TOP 10 Rated</h5>
-    <div class="container">
-        {% for movie in movies %}
-        <div>
-            <a href="{% url 'CriticCorner:movie' movie.title %}">
-                <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster" class="poster">
-                <p class="name">{{ movie.title }}</p>
-            </a>
+    <div class="section">
+        <h5 class="section-title">TOP 10 Rated</h5>
+        <div class="movie-container">
+            {% for movie in top_rated_movies %}
+            <div class="movie-card">
+                <a href="{% url 'CriticCorner:movie' title=movie.title %}" class="movie-name">
+                    <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster" class="movie-poster">
+                    <p>{{ movie.title }}</p>
+                </a>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-  </div>
+    </div>
 </div>
 {% endblock %}

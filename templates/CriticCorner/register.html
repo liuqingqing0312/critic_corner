@@ -6,17 +6,59 @@
 {% endblock %}
 
 {% block body_block %}
-<h1>Register for CriticCorner</h1>
-{% if registered %}
-<strong>Thank you for registering!</strong><br />
-<a href="{% url 'CriticCorner:home' %}">Return to the homepage.</a><br />
-{% else %}
-<strong>Register here!</strong>
-<form id="user_form" method="post" action="{% url 'CriticCorner:register' %}" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ user_form.as_p }}
-    {{ profile_form.as_p }}
-    <input type="submit" name="submit" value="Register" />
-</form>
-{% endif %}
+<style>
+    .register-container {
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    .register-form {
+        margin: 0 auto;
+        max-width: 500px;
+    }
+
+    .form-input {
+        margin-bottom: 20px;
+    }
+
+    .success-message {
+        color: green;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    .error-message {
+        color: red;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="register-container">
+    <h1>Register for CriticCorner</h1>
+    {% if registered %}
+        <p class="success-message">Thank you for registering!</p>
+        <a href="{% url 'CriticCorner:home' %}" class="btn btn-primary">Return to the homepage</a>
+    {% else %}
+        <div class="register-form">
+            <strong>Register here!</strong>
+            <form id="user_form" method="post" action="{% url 'CriticCorner:register' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ user_form.as_p }}
+                {{ profile_form.as_p }}
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+            {% if form.errors %}
+                <p class="error-message">Please correct the errors below:</p>
+                <ul>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li>{{ field.label }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
 {% endblock %}

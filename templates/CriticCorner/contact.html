@@ -1,23 +1,47 @@
 {% extends 'CriticCorner/base.html' %}
 {% load staticfiles %}
 
-{% block title %}
+{% block title_block %}
     Contact
 {% endblock %}
 
 {% block body_block %}
 <style>
-    .feedback {
+    .feedback-container {
         text-align: center;
+        margin-top: 50px;
     }
 
+    .feedback-textarea {
+        width: 80%;
+        max-width: 600px;
+        height: 200px;
+        margin: 20px auto;
+        padding: 10px;
+        resize: vertical;
+    }
+
+    .submit-btn {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+
+    .submit-btn:hover {
+        background-color: #0056b3;
+    }
 </style>
-<form action="{% url 'CriticCorner:contact' %}" method="post">
-    {% csrf_token %}
-    <div class="feedback">
-        <h3>Tell us about your issues and we'll find the BEST solution for you.</h3>
-        <textarea name="feedback" cols="100" rows="10" placeholder="Enter your feedback"></textarea><br>
-        <input type="submit" value="Submit">
-    </div>
-</form>
+
+<div class="container feedback-container">
+    <h3>Tell us about your issues and we'll find the BEST solution for you.</h3>
+    <form action="{% url 'CriticCorner:contact' %}" method="post">
+        {% csrf_token %}
+        <textarea name="feedback" class="form-control feedback-textarea" placeholder="Enter your feedback"></textarea><br>
+        <button type="submit" class="btn btn-primary submit-btn">Submit</button>
+    </form>
+</div>
 {% endblock %}

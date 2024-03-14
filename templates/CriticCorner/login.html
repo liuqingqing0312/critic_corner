@@ -7,27 +7,35 @@
 
 {% block body_block %}
 <style>
-    h1 {
+
+    .login-container {
         text-align: center;
+        margin-top: 50px;
     }
 
-    #login_form {
-        text-align: center;
+    .login-form {
+        margin: 0 auto;
+        max-width: 400px;
     }
 
-    #login_form input[type="text"],
-    #login_form input[type="password"],
-    #login_form input[type="submit"] {
-        margin-bottom: 20px; 
+    .form-input {
+        margin-bottom: 20px;
     }
 </style>
-<h1>Login to CriticCorner</h1>
-<form id="login_form" method="post" action="{% url 'CriticCorner:login' %}">
-    {% csrf_token %}
-    Username: <input type="text" name="username" value="" size="50" />
-    <br />
-    Password: <input type="password" name="password" value="" size="50" />
-    <br />
-    <input type="submit" value="Login" />
-</form>
+
+<div class="login-container">
+    <h1>Login to CriticCorner</h1>
+    <form class="login-form" method="post" action="{% url 'CriticCorner:login' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" class="form-control form-input" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" class="form-control form-input" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+</div>
 {% endblock %}
