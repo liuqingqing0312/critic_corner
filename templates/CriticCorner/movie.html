@@ -12,22 +12,26 @@
     <div class="movie-card">
         <div class="movie-details">
             <span class="poster-container">
-                <img class="poster" src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster">
+                <img class="poster" src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
             </span>
             <span class="details-container">
                 <h3 class="title">{{ movie.title }}</h3>
+                {% if movie.original_title and movie.original_title != movie.title %}
+                    <p class="original_title">Original Title: {{ movie.original_title }}</p>
+                {% endif %}
                 <p class="genre">Genre: {{ movie.genre }}</p>
                 <p class="views">Views: {{ movie.views }}</p>
-                <p class="avg-rating">Average Rating: {{ average_rating }}</p>
+                <p class="avg-rating">Average Rating: {{ movie.rate }}</p>
+                <p class="overview">Overview: {{ movie.overview }}</p>
                 <form method="post" action="{% url 'CriticCorner:add_wishlist' %}">
                     {% csrf_token %}
                     <input type="hidden" name="user" value="{{ request.user }}">
-                    <input type="hidden" name="movie" value="{{ movie.pk }}">
+                    <input type="hidden" name="movie_id" value="{{ movie.id }}">
                     <button type="submit" class="submit-btn">Add to Wishlist</button>
                 </form>
             </span>
             <span>
-                <iframe width="560" height="315" src="{{ movie.url }}" frameborder="0" allowfullscreen></iframe>
+                <iframe width="560" height="315" src="{{ movie.trailer }}" frameborder="0" allowfullscreen></iframe>
             </span>
         </div>
         <div class="reviews">
@@ -49,7 +53,7 @@
             <h4>Add a Review:</h4>
             <form action="{% url 'CriticCorner:add_review' %}" method="post">
                 {% csrf_token %}
-                <input type="hidden" name="title" value="{{ movie.title }}">
+                <input type="hidden" name="movie_id" value="{{ movie.id }}">
                 <label for="review_content">Review:</label>
                 <textarea id="review_content" name="content" rows="4" cols="50" required></textarea>
                 <label for="review_rating">Rating (out of 5):</label>
