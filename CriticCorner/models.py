@@ -38,7 +38,7 @@ class Movie(models.Model):
     ratings = models.IntegerField(default=0)
     poster = models.ImageField(upload_to = 'media/posters')
     release_date = models.DateField(default=utils.timezone.now)
-    avg_rating = models.DecimalField(max_digits=3, decimal_places=1, default=0.0, validators=[MinValueValidator(MIN_RATING_VALUE), MaxValueValidator(MAX_RATING_VALUE)])
+    avg_rating = models.DecimalField(max_digits=20, decimal_places=10, default=0.0, validators=[MinValueValidator(MIN_RATING_VALUE), MaxValueValidator(MAX_RATING_VALUE)])
     slug = models.SlugField(unique=True)
     
     def save(self, *args, **kwargs):
