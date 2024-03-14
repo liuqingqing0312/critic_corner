@@ -11,33 +11,37 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+
 def about(request):
-    return render(request, 'CriticCorner/about.html')
+    return render(request, "CriticCorner/about.html")
+
 
 def home(request):
     movies = Movie.objects.all()
-    return render(request, 'CriticCorner/home.html', {'movies': movies})
+    return render(request, "CriticCorner/home.html", {"movies": movies})
+
 
 def activate(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
         user = authenticate(username=username, password=password)
         if user:
             if user.is_active:
                 login(request, user)
-                return redirect(reverse('home'))
+                return redirect(reverse("home"))
             else:
                 return HttpResponse("Your CriticCorner account is disabled.")
         else:
             print(f"Invalid login details: {username}, {password}")
             return HttpResponse("Invalid login details supplied.")
     else:
-        return render(request, 'CriticCorner/login.html')
+        return render(request, "CriticCorner/login.html")
+
 
 def register(request):
     registered = False
-    if request.method == 'POST':
+    if request.method == "POST":
         user_form = UserForm(request.POST)
         profile_form = UserProfileForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
@@ -46,8 +50,8 @@ def register(request):
             user.save()
             profile = profile_form.save(commit=False)
             profile.user = user
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
+            if "picture" in request.FILES:
+                profile.picture = request.FILES["picture"]
             profile.save()
             registered = True
         else:
@@ -55,61 +59,84 @@ def register(request):
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
-    return render(request,
-                  'CriticCorner/register.html',
-                  context={'user_form': user_form,
-                           'profile_form': profile_form,
-                           'registered': registered})
+    return render(
+        request,
+        "CriticCorner/register.html",
+        context={
+            "user_form": user_form,
+            "profile_form": profile_form,
+            "registered": registered,
+        },
+    )
+
 
 @login_required
 def user_logout(request):
     logout(request)
-    return redirect(reverse('CriticCorner:home'))
+    return redirect(reverse("CriticCorner:home"))
+
 
 def contact(request):
-    return render(request, 'CriticCorner/contact.html')
+    return render(request, "CriticCorner/contact.html")
+
 
 def movie(request, title):
     movie = Movie.objects.filter(title=title).first()
     reviews = Review.objects.filter(movie=movie)
-    return render(request, 'CriticCorner/movie.html', {'movie': movie, 'reviews': reviews})
+    return render(
+        request, "CriticCorner/movie.html", {"movie": movie, "reviews": reviews}
+    )
+
 
 @login_required
 def wishlist(request):
     if request.user.is_authenticated:
         wishlist_items = WishList.objects.filter(user_profile=request.userprofile)
-        return render(request, 'CriticCorner/wishlist.html', {'wishlist_items': wishlist_items})
+        return render(
+            request, "CriticCorner/wishlist.html", {"wishlist_items": wishlist_items}
+        )
     else:
-        return render(request, 'CriticCorner/wishlist.html', {'wishlist_items': []})
-    
+        return render(request, "CriticCorner/wishlist.html", {"wishlist_items": []})
+
+
 @login_required
 def add_review(request):
-    if request.method == 'POST':
-        content = request.POST.get('content')
-        rating = request.POST.get('rating')
-        movie_title = request.POST.get('movie_title')  # Adjust this based on how you pass movie title
-        
+    if request.method == "POST":
+        content = request.POST.get("content")
+        rating = request.POST.get("rating")
+        movie_title = request.POST.get(
+            "movie_title"
+        )  # Adjust this based on how you pass movie title
+
         # Assuming you have a way to identify the movie for which the review is being added
         movie = Movie.objects.get(title=movie_title)
-        
+
         # Create the review object
-        review = Review.objects.create(user=request.user.userprofile, content=content, rating=rating, movie=movie)
-        
+        review = Review.objects.create(
+            user=request.user.userprofile, content=content, rating=rating, movie=movie
+        )
+
         # Redirect the user to the movie page with the updated reviews
-        return redirect('CriticCorner:movie', title=movie_title)
+        return redirect("CriticCorner:movie", title=movie_title)
     else:
         # Handle GET requests if needed (optional)
         pass
 
-@login_required
+
 def account_view(request):
-    return render(request, 'account.html', {'user': request.user})
+    if request.user.is_authenticated:
+        return render(request, "CriticCorner/account.html", {"user": request.user})
+    else:
+        return redirect(reverse("CriticCorner:login"))
+
 
 def search_view(request):
-    query = request.GET.get('q', '')
+    query = request.GET.get("q", "")
     if query:
-        results = Movie.objects.filter(title__icontains=query)
+        movies = Movie.objects.filter(title__icontains=query)
     else:
-        results = []
+        movies = []
 
-    return render(request, 'search.html', {'results': results, 'query': query})
+    return render(
+        request, "CriticCorner/search.html", {"movies": movies, "query": query}
+    )
