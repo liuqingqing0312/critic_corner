@@ -147,3 +147,6 @@ LOGIN_REDIRECT_URL = 'CriticCorner:home'
 LOGIN_URL = 'auth_login'
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
+
+# For movie API use
+ONLINE_IMAGE_ROOT = "https://image.tmdb.org/t/p/w500/"

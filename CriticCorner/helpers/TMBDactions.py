@@ -1,4 +1,5 @@
 from tmdbv3api import Movie, TMDb, Genre
+import json
 
 API_KEY = "e359feb309aff2209a6cfea5553838bf"
 
@@ -35,7 +36,11 @@ def get_genres_by_id(id: int) -> str:
 
 def get_trailer_url_by_id(id: int) -> str:
     """returns youtube video url."""
-    return "https://www.youtube.com/embed/"+dict([chungus for chungus in movie.videos(id)][0])["key"]
+    video_object = [chungus for chungus in movie.videos(id)][0]
+    # if no proper results then return early
+    if len(video_object)< 6:
+        return "https://www.youtube.com/embed/ihyjXd2C-E8"
+    return "https://www.youtube.com/embed/"+dict(video_object)["key"]
 
 def get_genres() -> dict:
     return genres
@@ -43,6 +48,6 @@ def get_genres() -> dict:
 # you would also have all other relevant info stored locally
 if __name__ == "__main__":
     #test script
-    # print(get_movies_by_search("chungus"))
-    print(get_trailer_url_by_id(147))
-    print(get_genres())
+    # print(get_movies_by_search("Life of Pi")[:1])
+    print(get_trailer_url_by_id(93782))
+    # print(get_genres())

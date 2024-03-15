@@ -17,23 +17,11 @@ class Movie(models.Model):
     TITLE_MAX_LENGTH = 128
     URL_MAX_LENGTH = 200
 
-    HORROR = 'horror'
-    ROMANCE = 'romance'
-    ACTION = 'action'
-    COMEDY = 'comedy'
     MIN_RATING_VALUE = 0
     MAX_RATING_VALUE = 5
-
-    GENRE_CHOICES = [
-        (HORROR, 'Horror'),
-        (ROMANCE, 'Romance'),
-        (ACTION, 'Action'),
-        (COMEDY, 'Comedy'),
-        # Add more genres here if needed
-    ]
     
     #the id that is used by TMBD api to identify a specific movie
-    api_id = models.IntegerField(unique=True, default=0)
+    api_id = models.IntegerField(primary_key=True, default=0)
     
     title = models.CharField(max_length=256)
     genre = models.CharField(max_length=1000)
