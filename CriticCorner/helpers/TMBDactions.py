@@ -1,6 +1,7 @@
 from tmdbv3api import Movie, TMDb, Genre
 from datetime import datetime, timedelta
 from django.utils.text import slugify
+import json
 
 API_KEY = "e359feb309aff2209a6cfea5553838bf"
 
@@ -40,7 +41,11 @@ def get_genres_by_id(ids: list) -> str:
 
 def get_trailer_url_by_id(id: int) -> str:
     """returns youtube video url."""
-    return "https://www.youtube.com/embed/"+dict([chungus for chungus in movie.videos(id)][0])["key"]
+    video_object = [chungus for chungus in movie.videos(id)][0]
+    # if no proper results then return early
+    if len(video_object)< 6:
+        return "https://www.youtube.com/embed/ihyjXd2C-E8"
+    return "https://www.youtube.com/embed/"+dict(video_object)["key"]
 
 def get_most_popular_movies() -> list:
     """Returns a list of dictionaries containing information about the most popular movies.
@@ -170,6 +175,8 @@ def get_movie_details(slug):
     else:
         return None
     
+def get_genres() -> dict:
+    return genres
 # you should never need to get movie info from database since if you have id
 # you would also have all other relevant info stored locally
 if __name__ == "__main__":

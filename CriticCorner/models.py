@@ -7,6 +7,8 @@ import glob
 from django.template.defaultfilters import slugify
 from six import python_2_unicode_compatible
 
+from CriticCorner.helpers.TMBDactions import get_genres
+
 MIN_RATING_VALUE = 0
 MAX_RATING_VALUE = 5
 
@@ -15,23 +17,15 @@ class Movie(models.Model):
     TITLE_MAX_LENGTH = 128
     URL_MAX_LENGTH = 200
 
-    HORROR = 'horror'
-    ROMANCE = 'romance'
-    ACTION = 'action'
-    COMEDY = 'comedy'
     MIN_RATING_VALUE = 0
     MAX_RATING_VALUE = 5
-
-    GENRE_CHOICES = [
-        (HORROR, 'Horror'),
-        (ROMANCE, 'Romance'),
-        (ACTION, 'Action'),
-        (COMEDY, 'Comedy'),
-        # Add more genres here if needed
-    ]
-
+    
+    #the id that is used by TMBD api to identify a specific movie
+    api_id = models.IntegerField(primary_key=True, default=0)
+    
     title = models.CharField(max_length=256)
-    genre = models.CharField(max_length=20, choices=GENRE_CHOICES)
+    genre = models.CharField(max_length=1000)
+    
     # url will contain link to youtube video
     url = models.URLField(max_length=URL_MAX_LENGTH)
     views = models.IntegerField(default=0)
@@ -41,10 +35,17 @@ class Movie(models.Model):
     avg_rating = models.DecimalField(max_digits=20, decimal_places=10, default=0.0, validators=[MinValueValidator(MIN_RATING_VALUE), MaxValueValidator(MAX_RATING_VALUE)])
     slug = models.SlugField(unique=True)
     
+    # will have to later check to remove entries from database that
+    # are > 6months old, this will happen once every 2 months
+    date_added = models.DateField(default=utils.timezone.now)
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title + str(self.release_date)[:10])
         super(Movie, self).save(*args, **kwargs)
 
+    def get_genre(self):
+        genre_list = self.genre.split(",")
+        return genre_list
+        
     def __str__(self):
         return self.title
 

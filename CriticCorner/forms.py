@@ -22,3 +22,8 @@ class ReviewForm(forms.ModelForm):
             'content': 'Review',
             'rating': 'Rating (out of 5)',
         }
+        
+class MovieForm(forms.ModelForm):
+    class Meta:
+        model = Movie
+        fields = '__all__'
