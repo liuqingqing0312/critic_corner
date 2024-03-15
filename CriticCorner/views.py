@@ -14,6 +14,8 @@ from CriticCorner.forms import UserForm, UserProfileForm, ReviewForm
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from CriticCorner.helpers.TMBDactions import get_genres_by_id, get_movies_by_search, get_trailer_url_by_id, get_most_popular_movies, get_newly_released_movies, get_top_rated_movies, get_movie_details
+from django.utils.text import slugify
 
 def about(request):
     return render(request, 'CriticCorner/about.html')
