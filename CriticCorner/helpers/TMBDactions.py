@@ -1,7 +1,11 @@
+#tmdb wrapper is used wherever possible but some things have to be done with raw requests.
 from tmdbv3api import Movie, TMDb, Genre
 import json
+import requests
+from typing import Optional
 
 API_KEY = "e359feb309aff2209a6cfea5553838bf"
+MAX_NUM_PAGES_TO_LOAD = 10
 
 movie = Movie()
 movie.api_key = API_KEY
@@ -42,12 +46,53 @@ def get_trailer_url_by_id(id: int) -> str:
         return "https://www.youtube.com/embed/ihyjXd2C-E8"
     return "https://www.youtube.com/embed/"+dict(video_object)["key"]
 
+def advanced_movie_search(title: str) -> list:
+    """
+    returns list of dictionaries of max length MAX_NUM_PAGES_TO_LOAD*20. keep it stored in memory so we are not making 
+    unneccessary requests to api. differs from get_movies_by_search as it loads more than just the first page
+    """
+
+    #first we must find the number of pages that the search generates. This means searching for the title
+    results = movie.search(title)
+
+    # if title does not match anything in table
+    if results.get("total_results") == 0:
+        return []
+    
+    num_pages = results.get("total_pages")
+
+    params = {
+        'query': title,
+        'api_key': API_KEY,
+        'page' : 1
+    }
+
+    movies = []
+    for i in range(min(num_pages, MAX_NUM_PAGES_TO_LOAD)):
+        response = requests.get('https://api.themoviedb.org/3/search/movie', params=params)
+        if not(response.ok):
+            return movies
+        results = json.loads(response.content)["results"]
+        #append new movie dicts to our list
+        movies += results
+
+        #increase page number so next request is on next page
+        params["page"] += 1
+
+    return movies
+
+
+
+
 def get_genres() -> dict:
     return genres
-# you should never need to get movie info from database since if you have id
-# you would also have all other relevant info stored locally
+
+
+
 if __name__ == "__main__":
     #test script
-    # print(get_movies_by_search("Life of Pi")[:1])
-    print(get_trailer_url_by_id(93782))
+    # print(len(get_movies_by_search("and")))
+    # print(get_trailer_url_by_id(93782))
     # print(get_genres())
+    
+    print(advanced_movie_search("life"))
