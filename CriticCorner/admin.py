@@ -2,7 +2,7 @@ from django.contrib import admin
 from CriticCorner.models import Movie, UserProfile, Review, WishList
 
 class MovieAdmin(admin.ModelAdmin):
-    list_display = ('title','genre','url','slug')
+    list_display = ('title','genre','url','slug','avg_rating')
     prepopulated_fields = {'slug':('title',)}
 
 

@@ -16,7 +16,7 @@ Home
         {% for movie in popular_movies %}
         <div>
             <a href="{% url 'CriticCorner:movie' slug=movie.slug %}">
-                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.original_title }} Poster" class="poster">
+                <img src="{{ movie.poster.url }}" alt="{{ movie.original_title }} Poster" class="poster">
                 <p class="name">{{ movie.title }}</p>
             </a>
         </div>
@@ -30,7 +30,7 @@ Home
         {% for movie in new_released_movies %}
         <div>
             <a href="{% url 'CriticCorner:movie' slug=movie.slug %}">
-                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.original_title }} Poster" class="poster">
+                <img src="{{ movie.poster.url }}" alt="{{ movie.original_title }} Poster" class="poster">
                 <p class="name">{{ movie.title }}</p>
             </a>
         </div>
@@ -39,12 +39,12 @@ Home
 </div>
 
 <div>
-    <h5 class="title">TOP 10 Rated</h5>
+    <h5 class="title">TOP 5 Rated</h5>
     <div class="movie-container">
         {% for movie in top_rated_movies %}
         <div>
             <a href="{% url 'CriticCorner:movie' slug=movie.slug %}">
-                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.original_title }} Poster" class="poster">
+                <img src="{{ movie.poster.url }}" alt="{{ movie.original_title }} Poster" class="poster">
                 <p class="name">{{ movie.title }}</p>
             </a>
         </div>

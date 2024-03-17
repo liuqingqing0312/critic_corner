@@ -14,12 +14,12 @@
         {% for item in wishlist_items %}
         <div class="wishlist-item">
             <a href="{% url 'CriticCorner:movie' slug=item.movie.slug %}">
-                <img src="https://image.tmdb.org/t/p/w500{{ item.movie.poster_path }}" alt="{{ item.movie.title }} Poster" class="poster">
+                <img src="{{ item.movie.poster.url }}" alt="{{ item.movie.title }} Poster" class="poster">
                 <p class="name">{{ item.movie.title }}</p>
             </a>
             <form action="{% url 'CriticCorner:remove_from_wishlist' %}" method="post" class="remove-form">
                 {% csrf_token %}
-                <input type="hidden" name="movie_id" value="{{ item.movie.id }}">
+                <input type="hidden" name="id" value="{{ item.id }}">
                 <button type="submit" class="remove-btn">Remove from Wishlist</button>
             </form>
         </div>
