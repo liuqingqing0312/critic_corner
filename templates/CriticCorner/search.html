@@ -2,36 +2,41 @@
 {% load staticfiles %}
 
 {% block title_block %}
-    Search
+Search
 {% endblock %}
 
 {% block body_block %}
 <style>
-    .search-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 80vh;
+    .filter-section {
+        float: left;
+        width: 20%;
+        padding: 20px;
+        border-right: 2px solid #ddd;
     }
 
-    .search-box {
-        width: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .results-section {
+        float: right;
+        width: 75%;
+        padding: 20px;
+    }
+
+    .search-bar-container {
+        text-align: center;
+        padding: 20px 0;
     }
 
     .search-input {
-        width: 70%;
+        width: 60%;
         padding: 10px;
         font-size: 20px;
+        margin-right: -4px;
         border: 2px solid #ddd;
         border-radius: 5px 0 0 5px;
         outline: none;
     }
 
     .search-button {
-        padding: 10px 20px;
+        padding: 12px 20px;
         font-size: 20px;
         border: none;
         background-color: #333;
@@ -43,12 +48,96 @@
     .search-button:hover {
         background-color: #555;
     }
+
+    .filter-title {
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .filter-group {
+        margin-bottom: 20px;
+    }
+
+    .filter-checkbox {
+        margin-right: 5px;
+    }
+
+    .result-item {
+        margin-bottom: 10px;
+
+        background: #ccc;
+        width: 100%;
+        padding-top: 56.25%;
+
+        position: relative;
+    }
+
+    .sort-section {
+        text-align: right;
+        margin-bottom: 10px;
+    }
+
+
+    .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
 </style>
 
-<div class="search-container">
-    <div class="search-box">
-        <input type="text" class="search-input" placeholder="Search for movies, actors, directors...">
-        <button class="search-button">Search</button>
+<div class="search-bar-container">
+    <input type="text" class="search-input" placeholder="Search...">
+    <button class="search-button">Search</button>
+</div>
+
+<div class="clearfix">
+    <div class="filter-section">
+        <div class="filter-title">BY Genre</div>
+        <div class="filter-group">
+
+            <label><input type="checkbox" class="filter-checkbox">Action</label><br>
+            <label><input type="checkbox" class="filter-checkbox">Comedy</label><br>
+        </div>
+        <div class="filter-title">BY Release Date</div>
+        <div class="filter-group">
+
+            <label><input type="checkbox" class="filter-checkbox">Within 3 months</label><br>
+            <label><input type="checkbox" class="filter-checkbox">Within 1 year</label><br>
+
+        </div>
+        <div class="filter-title">BY Language</div>
+        <div class="filter-group">
+
+            <label><input type="checkbox" class="filter-checkbox">English</label><br>
+            <label><input type="checkbox" class="filter-checkbox">Chinese</label><br>
+
+        </div>
+    </div>
+
+    <div class="results-section">
+        <div class="sort-section">
+            <select>
+                <option>Sorted By</option>
+                <option value="popularity">Popularity</option>
+                <option value="release_date">Release Date</option>
+            </select>
+        </div>
+        {% for movie in movies %}
+        <div class="movie-card">
+            <img class="poster" src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster">
+            <div class="movie-details">
+                <h3 class="title">{{ movie.title }}</h3>
+                <p class="genre">Genre: {{ movie.genre }}</p>
+                <p class="release-date">Release Date: {{ movie.release_date }}</p>
+                <p class="views">Views: {{ movie.views }}</p>
+                <p class="ratings">Ratings: {{ movie.ratings }}</p>
+                <p class="avg-rating">Average Rating: {{ movie.avg_rating }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <p>No movies found.</p>
+        {% endfor %}
     </div>
 </div>
+
 {% endblock %}

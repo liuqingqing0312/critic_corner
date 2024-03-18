@@ -2,34 +2,90 @@
 {% load staticfiles %}
 
 {% block title_block %}
-    Account
+Account
 {% endblock %}
 
 {% block body_block %}
-<link href="{% static 'styles/account.css' %}" rel="stylesheet">
+<style>
+    .account-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
 
-<div class="container">
-    <div class="account-info account-section">
-        <h2>Account Information</h2>
-        <div class="info-item">Username: {{ user.username }}</div>
-        <div class="info-item">Email: {{ user.email }}</div>
-        <!-- !!!!!!!!Add more info -->
+    .user-info,
+    .user-reviews,
+    .watch-list {
+        background-color: #f2f2f2;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+    .user-info {
+        width: 30%;
+    }
+
+    .user-reviews {
+        width: 65%;
+        overflow-y: auto;
+        max-height: 400px;
+    }
+
+    .review-item {
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: #ffffff;
+        border-radius: 5px;
+    }
+
+    .watch-list {
+        margin-top: 20px;
+        overflow-x: auto;
+    }
+
+    .movie-item {
+        display: inline-block;
+        width: 150px;
+        margin-right: 10px;
+    }
+
+    .edit-watch-list {
+        display: block;
+        margin-top: 20px;
+        text-align: right;
+    }
+
+    .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+</style>
+
+<div class="account-container">
+    <div class="user-info">
+        <img src="{% static 'profile_pic_placeholder.png' %}" alt="Profile Picture" class="profile-pic">
+        <h2>USER NAME</h2>
+        <p>Biography: Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum</p>
     </div>
 
-    <div class="user-reviews account-section">
+    <div class="user-reviews">
         <h2>My Reviews</h2>
-        <!-- User's reviews -->
-    </div>
-
-    <div class="user-wishlist account-section">
-        <h2>My Wishlist</h2>
-        <!-- User's wishlists -->
-        {% include 'wishlist.html' %}
-    </div>
-
-    <div class="user-history account-section">
-        <h2>Viewing History</h2>
-        <!-- User's browse history -->
+        <div class="review-item">
+            <strong>MOVIE_NAME</strong>
+            <p>Contents</p>
+        </div>
     </div>
 </div>
+
+<div class="watch-list clearfix">
+    <h2>Watch List</h2>
+    <div class="movie-item">
+        <img src="{% static 'movie_placeholder.png' %}" alt="MOVIE_NAME">
+        <p>MOVIE_NAME</p>
+    </div>
+
+    <a href="#" class="edit-watch-list">Edit Watch List</a>
+</div>
+
 {% endblock %}

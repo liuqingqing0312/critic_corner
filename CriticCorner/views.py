@@ -17,7 +17,8 @@ from django.dispatch import receiver
 from django.db.models import Avg
 
 def about(request):
-    return render(request, 'CriticCorner/about.html')
+    return render(request, "CriticCorner/about.html")
+
 
 def home(request):
     # Retrieve popular, new released, and top-rated movies from the database
@@ -154,3 +155,23 @@ def remove_from_wishlist(request):
 @login_required
 def review_restrict(request):
     return render(request, 'CriticCorner/review_restrict.html')
+
+
+
+def account_view(request):
+    if request.user.is_authenticated:
+        return render(request, "CriticCorner/account.html", {"user": request.user})
+    else:
+        return redirect(reverse("CriticCorner:login"))
+
+
+def search_view(request):
+    query = request.GET.get("q", "")
+    if query:
+        movies = Movie.objects.filter(title__icontains=query)
+    else:
+        movies = []
+
+    return render(
+        request, "CriticCorner/search.html", {"movies": movies, "query": query}
+    )
