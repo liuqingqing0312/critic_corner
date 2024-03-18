@@ -83,7 +83,23 @@ def advanced_movie_search(title: str) -> list:
 
     return movies
 
+def advanced_movie_search_sorted_by_popularity(title: str) -> list:
+    movies = advanced_movie_search(title)
+    sorted_movies = sorted(movies, key=lambda x: x.get('popularity', 0), reverse=True)
+    return sorted_movies
 
+def advanced_movie_search_sorted_by_release(title: str) -> list:
+    """
+    Searches for movies based on the title using advanced search and then sorts
+    the resulting list by release date.
+    """
+    # Call advanced_movie_search to get the list of movies
+    movies = advanced_movie_search(title)
+
+    # Sort the movies by release date
+    sorted_movies = sorted(movies, key=lambda x: x.get('release_date', ''), reverse=True)
+
+    return sorted_movies
 
 
 def get_genres() -> dict:

@@ -15,6 +15,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db.models import Avg
+from CriticCorner.helpers.TMBDactions import advanced_movie_search, advanced_movie_search_sorted_by_popularity, advanced_movie_search_sorted_by_release
 
 def about(request):
     return render(request, "CriticCorner/about.html")
@@ -38,9 +39,6 @@ def home(request):
 
 def contact(request):
     return render(request, 'CriticCorner/contact.html')
-
-def search(request):
-    return render(request, 'CriticCorner/search.html')
 
 def movie(request, slug):
     movie = Movie.objects.filter(slug=slug).first()
@@ -174,11 +172,20 @@ def account_view(request):
 
 def search_view(request):
     query = request.GET.get("q", "")
-    if query:
-        movies = Movie.objects.filter(title__icontains=query)
-    else:
-        movies = []
 
-    return render(
-        request, "CriticCorner/search.html", {"movies": movies, "query": query}
-    )
+    if not query:
+        # If there's no query, redirect back to the search page
+        return redirect("CriticCorner:search")
+
+    # Store the last search query in the session
+    request.session['last_query'] = query
+
+    # Fetch movies for each sorting option
+    movies_popularity = advanced_movie_search_sorted_by_popularity(query)
+    movies_release = advanced_movie_search_sorted_by_release(query)
+    movies_default = advanced_movie_search(query)
+
+    return render(request, "CriticCorner/search.html", {"movies_popularity": movies_popularity,
+                                                        "movies_release": movies_release,
+                                                        "movies_default": movies_default,
+                                                        "query": query})
