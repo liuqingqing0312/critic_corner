@@ -154,30 +154,57 @@ Search
             <label><input type="checkbox" class="filter-checkbox">Spanish</label><br>
 
         </div>
+        <button id="filter-button">Apply Filters</button>
     </div>
 
     <div class="sort-section">
         <select id="sort-select">
             <option value="default">Default</option>
             <option value="popularity">Popularity</option>
-            <option value="release">Release Date</option>
+            <option value="release_date">Release Date</option>
         </select>
         <button id="sort-button">Sort</button>
     </div>
-    
-    <div class="results-section">
-        <h3>Search Results for "{{ query }}":</h3>
-        <div class="movies-container" id="movies-container">
-            {% for movie in movies_default %}
-            <div class="movie-card">
-                {% if movie.poster_path %}
-                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
-                {% else %}
-                <div class="no-poster"></div>
-                {% endif %}
-                <span class="title">{{ movie.title }}</span>
+            <div class="results-section">
+                <h3>Search Results for "{{ query }}":</h3>
+                <div class="movies-container" id="movies-container">
+                    {% if sort_by == "popularity" %}
+                        {% for movie in movies_popularity %}
+                            <div class="movie-card">
+                                {% if movie.poster_path %}
+                                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+                                {% else %}
+                                    <div class="no-poster"></div>
+                                {% endif %}
+                                <span class="title">{{ movie.title }}</span>
+                            </div>
+                        {% endfor %}
+                    {% elif sort_by == "release_date" %}
+                        {% for movie in movies_release %}
+                            <div class="movie-card">
+                                {% if movie.poster_path %}
+                                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+                                {% else %}
+                                    <div class="no-poster"></div>
+                                {% endif %}
+                                <span class="title">{{ movie.title }}</span>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {% for movie in movies_default %}
+                            <div class="movie-card">
+                                {% if movie.poster_path %}
+                                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+                                {% else %}
+                                    <div class="no-poster"></div>
+                                {% endif %}
+                                <span class="title">{{ movie.title }}</span>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
             </div>
-            {% endfor %}
+            
         </div>
     </div>
     
@@ -190,7 +217,7 @@ Search
                 // Redirect to the appropriate URL based on the selected sorting option
                 if (selectedOption === "popularity") {
                     window.location.href = "{% url 'CriticCorner:search' %}?q={{ query }}&sort_by=popularity";
-                } else if (selectedOption === "release") {
+                } else if (selectedOption === "release_date") {
                     window.location.href = "{% url 'CriticCorner:search' %}?q={{ query }}&sort_by=release_date";
                 } else {
                     // Default sorting

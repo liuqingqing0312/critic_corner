@@ -96,7 +96,7 @@ def advanced_movie_search_sorted_by_release(title: str) -> list:
     # Call advanced_movie_search to get the list of movies
     movies = advanced_movie_search(title)
 
-    # Sort the movies by release date
+    # Sort the movies by release date if 'release_date' is present in each movie dictionary
     sorted_movies = sorted(movies, key=lambda x: x.get('release_date', ''), reverse=True)
 
     return sorted_movies
@@ -113,4 +113,5 @@ if __name__ == "__main__":
     # print(get_trailer_url_by_id(93782))
     # print(get_genres())
     
-    print(advanced_movie_search("life"))
+    # print(advanced_movie_search("life"))
+    print(advanced_movie_search_sorted_by_release("life"))

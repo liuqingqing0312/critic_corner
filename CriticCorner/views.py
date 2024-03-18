@@ -172,13 +172,7 @@ def account_view(request):
 
 def search_view(request):
     query = request.GET.get("q", "")
-
-    if not query:
-        # If there's no query, redirect back to the search page
-        return redirect("CriticCorner:search")
-
-    # Store the last search query in the session
-    request.session['last_query'] = query
+    sort_by = request.GET.get("sort_by", "default")  # Get the sorting option
 
     # Fetch movies for each sorting option
     movies_popularity = advanced_movie_search_sorted_by_popularity(query)
@@ -188,4 +182,5 @@ def search_view(request):
     return render(request, "CriticCorner/search.html", {"movies_popularity": movies_popularity,
                                                         "movies_release": movies_release,
                                                         "movies_default": movies_default,
-                                                        "query": query})
+                                                        "query": query,
+                                                        "sort_by": sort_by})
