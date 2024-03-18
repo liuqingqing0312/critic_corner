@@ -157,12 +157,19 @@ def review_restrict(request):
     return render(request, 'CriticCorner/review_restrict.html')
 
 
-
+@login_required
 def account_view(request):
-    if request.user.is_authenticated:
-        return render(request, "CriticCorner/account.html", {"user": request.user})
-    else:
-        return redirect(reverse("CriticCorner:login"))
+    user = request.user
+    try:
+        profile = UserProfile.objects.get(user=user)
+        user_reviews = Review.objects.filter(user=profile)
+        user_wishlist = WishList.objects.filter(user_profile=profile)
+    except UserProfile.DoesNotExist:
+        profile = None
+        user_reviews = []
+        user_wishlist = []
+
+    return render(request, "CriticCorner/account.html", {"user": user, "profile": profile, "user_reviews": user_reviews, "user_wishlist": user_wishlist})
 
 
 def search_view(request):

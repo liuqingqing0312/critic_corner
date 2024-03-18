@@ -1,0 +1,20 @@
+/* Additional CSS for styling the "Logged Out" page */
+.logged-out-content {
+    width: 50%;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.logged-out-content h1 {
+    text-align: center;
+    color: #333;
+}
+
+.logged-out-content p {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+}

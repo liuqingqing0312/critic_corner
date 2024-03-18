@@ -6,86 +6,46 @@ Account
 {% endblock %}
 
 {% block body_block %}
-<style>
-    .account-container {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
-    }
-
-    .user-info,
-    .user-reviews,
-    .watch-list {
-        background-color: #f2f2f2;
-        padding: 20px;
-        border-radius: 5px;
-    }
-
-    .user-info {
-        width: 30%;
-    }
-
-    .user-reviews {
-        width: 65%;
-        overflow-y: auto;
-        max-height: 400px;
-    }
-
-    .review-item {
-        margin-bottom: 10px;
-        padding: 10px;
-        background-color: #ffffff;
-        border-radius: 5px;
-    }
-
-    .watch-list {
-        margin-top: 20px;
-        overflow-x: auto;
-    }
-
-    .movie-item {
-        display: inline-block;
-        width: 150px;
-        margin-right: 10px;
-    }
-
-    .edit-watch-list {
-        display: block;
-        margin-top: 20px;
-        text-align: right;
-    }
-
-    .clearfix::after {
-        content: "";
-        clear: both;
-        display: table;
-    }
-</style>
+<link href="{% static 'styles/account.css' %}" rel="stylesheet">
 
 <div class="account-container">
     <div class="user-info">
-        <img src="{% static 'profile_pic_placeholder.png' %}" alt="Profile Picture" class="profile-pic">
-        <h2>USER NAME</h2>
-        <p>Biography: Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum</p>
+        {% if user.userprofile.picture %}
+            <img src="{{ user.userprofile.picture.url }}" alt="Profile Picture">
+        {% endif %}
+        <h2>Username: {{ user.username }}</h2>
+        <h4>Phone number: {{ user.userprofile.phone_number }}</h4>
     </div>
 
     <div class="user-reviews">
         <h2>My Reviews</h2>
-        <div class="review-item">
-            <strong>MOVIE_NAME</strong>
-            <p>Contents</p>
-        </div>
+        {% for review in user_reviews %}
+            <div class="review-item">
+                <h4>{{ review.movie }}</h4>
+                <h5>Rating: {{ review.rating }}</h5>
+                <p>{{ review.content }}</p>
+            </div>
+        {% endfor %}
     </div>
 </div>
 
-<div class="watch-list clearfix">
-    <h2>Watch List</h2>
-    <div class="movie-item">
-        <img src="{% static 'movie_placeholder.png' %}" alt="MOVIE_NAME">
-        <p>MOVIE_NAME</p>
+<div class="watch-list">
+    <div class="watch-list-header">
+        <h2>Wishlist</h2>
+        <form action="{% url 'CriticCorner:wishlist' %}" method="GET">
+            <button type="submit" class="edit-watch-list">Edit Wishlist</button>
+        </form>
     </div>
-
-    <a href="#" class="edit-watch-list">Edit Watch List</a>
+    <div class="movie-items-container">
+        {% for item in user_wishlist %}
+            <a href="{% url 'CriticCorner:movie' item.movie.slug %}" class="movie-link">
+                <div class="movie-item">
+                    <img src="{{ item.movie.poster.url }}" alt="{{ item.movie.title }} Poster">
+                    <h3>{{ item.movie }}</h3>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
 </div>
 
 {% endblock %}

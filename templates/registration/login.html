@@ -1,58 +1,12 @@
 {% extends 'CriticCorner/base.html' %}
+{% load staticfiles %}
+
 {% block title_block %}
     Login
 {% endblock %}
 {% block body_block %}
-<style>
-    .login-form {
-        width: 600px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f5f5f5;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        margin-top: 50px;
-    }
-        
-    .login-form h1 {
-        color: #333333;
-        margin-bottom: 20px;
-    }
-        
-    .login-form form {
-        width: 300px;
-        margin: 0 auto;
-    }
-        
-    .login-form input[type="submit"] {
-        background-color: #6c757d;
-        color: #ffffff;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-        
-    .login-form input[type="submit"]:hover {
-        background-color: #5c636a;
-    }
-        
-    .login-form p {
-        margin-top: 15px;
-    }
-        
-    .login-form a {
-        color: #007bff;
-        text-decoration: none;
-    }
-        
-    .login-form a:hover {
-        text-decoration: underline;
-    }
+<link href="{% static 'styles/login.css' %}" rel="stylesheet">
 
-</style>
 <div class="login-form">
     <h1>Login</h1>
     <form method="post" action=".">

@@ -1,19 +1,116 @@
-.account-section {
-    margin: 20px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
     background-color: #f9f9f9;
 }
 
-.account-info, .user-reviews, .user-wishlist, .user-history {
-    margin-bottom: 20px;
+/* Account Container */
+.account-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
 }
 
-h2 {
-    color: #333;
+/* User Info */
+.user-info {
+    width: 30%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.info-item {
+.user-info img {
+    border-radius: 50%;
+    max-width: 100px;
+    height: auto;
     margin-bottom: 10px;
+}
+
+/* User Reviews */
+.user-reviews {
+    width: 65%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    max-height: 400px;
+    margin-left: 20px;
+}
+
+.review-item {
+    background-color: #f2f2f2;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.review-item h4 {
+    margin-top: 0;
+}
+
+.review-item h5 {
+    margin-bottom: 5px;
+}
+
+/* Watch List */
+.watch-list {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+.watch-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.edit-watch-list {
+    margin-left: 10px;
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-watch-list:hover {
+    background-color: #5c636a;
+}
+
+/* Movie Items */
+.movie-items-container {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin-top: 20px;
+}
+
+.movie-item {
+    flex: 0 0 auto;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.movie-item img {
+    width: 150px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.movie-item h3 {
+    margin: 5px 0 0;
+    font-size: 16px;
+    font-weight: bold;
 }

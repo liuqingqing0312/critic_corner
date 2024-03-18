@@ -22,7 +22,7 @@
             <button class="profile-btn">Hi, User</button>
             <div class="dropdown-content">
             {% if user.is_authenticated %}
-              <a href="#">Account</a>
+              <a href="{% url 'CriticCorner:account' %}">Account</a>
               <a href="{% url 'CriticCorner:wishlist' %}">Wishlist</a>
               <a href="{% url 'auth_logout' %}?next={% url 'auth_logout' %}">Logout</a>
             {% else %}

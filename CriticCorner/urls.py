@@ -13,7 +13,6 @@ urlpatterns = [
     path('add_wishlist/', views.add_wishlist, name='add_wishlist'),
     path('remove_from_wishlist/', views.remove_from_wishlist, name='remove_from_wishlist'),
     path('review/restrict/', views.review_restrict, name='review_restrict'),
-    path('search/', views.search, name='search'),
     path('search/', views.search_view, name='search'),
     path('account/', views.account_view, name='account'),
 ]
