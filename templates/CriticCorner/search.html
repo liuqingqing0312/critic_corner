@@ -121,7 +121,7 @@ Search
 <div class="clearfix">
     <div class="filter-section">
         <div class="filter-title">BY Genre</div>
-        <div class="filter-group">
+        <div class="filter-group" id="genre-filter">
 
             <label><input type="checkbox" class="filter-checkbox">Action</label><br>
             <label><input type="checkbox" class="filter-checkbox">Comedy</label><br>
@@ -133,27 +133,23 @@ Search
             <label><input type="checkbox" class="filter-checkbox">Romance</label><br>
         </div>
         <div class="filter-title">BY Release Date</div>
-        <div class="filter-group">
-
-            <label><input type="checkbox" class="filter-checkbox">Within 3 months</label><br>
-            <label><input type="checkbox" class="filter-checkbox">Within 1 year</label><br>
-            <label><input type="checkbox" class="filter-checkbox">Within 5 year</label><br>
-            <label><input type="checkbox" class="filter-checkbox">Within 10 year</label><br>
-
-        </div>
-        <div class="filter-title">BY Language</div>
-        <div class="filter-group">
-
-            <label><input type="checkbox" class="filter-checkbox">English</label><br>
-            <label><input type="checkbox" class="filter-checkbox">Chinese</label><br>
-            <label><input type="checkbox" class="filter-checkbox">French</label><br>
-            <label><input type="checkbox" class="filter-checkbox">German</label><br>
-            <label><input type="checkbox" class="filter-checkbox">Italian</label><br>
-            <label><input type="checkbox" class="filter-checkbox">Japanese</label><br>
-            <label><input type="checkbox" class="filter-checkbox">Korean</label><br>
-            <label><input type="checkbox" class="filter-checkbox">Spanish</label><br>
-
-        </div>
+<div class="filter-group" id="release-date-filter">
+    <label><input type="checkbox" class="filter-checkbox" value="3_months">Within 3 months</label><br>
+    <label><input type="checkbox" class="filter-checkbox" value="1_year">Within 1 year</label><br>
+    <label><input type="checkbox" class="filter-checkbox" value="5_years">Within 5 years</label><br>
+    <label><input type="checkbox" class="filter-checkbox" value="10_years">Within 10 years</label><br>
+</div>
+<div class="filter-title">BY Language</div>
+<div class="filter-group" id="language-filter">
+    <label><input type="checkbox" class="filter-checkbox" value="en">English</label><br>
+    <label><input type="checkbox" class="filter-checkbox" value="zh">Chinese</label><br>
+    <label><input type="checkbox" class="filter-checkbox" value="fr">French</label><br>
+    <label><input type="checkbox" class="filter-checkbox" value="de">German</label><br>
+    <label><input type="checkbox" class="filter-checkbox" value="it">Italian</label><br>
+    <label><input type="checkbox" class="filter-checkbox" value="ja">Japanese</label><br>
+    <label><input type="checkbox" class="filter-checkbox" value="ko">Korean</label><br>
+    <label><input type="checkbox" class="filter-checkbox" value="es">Spanish</label><br>
+</div>
         <button id="filter-button">Apply Filters</button>
     </div>
 
@@ -165,46 +161,43 @@ Search
         </select>
         <button id="sort-button">Sort</button>
     </div>
-            <div class="results-section">
-                <h3>Search Results for "{{ query }}":</h3>
-                <div class="movies-container" id="movies-container">
-                    {% if sort_by == "popularity" %}
-                        {% for movie in movies_popularity %}
-                            <div class="movie-card">
-                                {% if movie.poster_path %}
-                                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
-                                {% else %}
-                                    <div class="no-poster"></div>
-                                {% endif %}
-                                <span class="title">{{ movie.title }}</span>
-                            </div>
-                        {% endfor %}
-                    {% elif sort_by == "release_date" %}
-                        {% for movie in movies_release %}
-                            <div class="movie-card">
-                                {% if movie.poster_path %}
-                                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
-                                {% else %}
-                                    <div class="no-poster"></div>
-                                {% endif %}
-                                <span class="title">{{ movie.title }}</span>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        {% for movie in movies_default %}
-                            <div class="movie-card">
-                                {% if movie.poster_path %}
-                                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
-                                {% else %}
-                                    <div class="no-poster"></div>
-                                {% endif %}
-                                <span class="title">{{ movie.title }}</span>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-            </div>
-            
+    <div class="results-section">
+        <h3>Search Results for "{{ query }}":</h3>
+        <div class="movies-container" id="movies-container">
+            {% if sort_by == "popularity" %}
+                {% for movie in movies_popularity %}
+                    <div class="movie-card" data-movie-slug="{{ movie.slug }}">
+                        {% if movie.poster_path %}
+                            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+                        {% else %}
+                            <div class="no-poster"></div>
+                        {% endif %}
+                        <span class="title">{{ movie.title }}</span>
+                    </div>
+                {% endfor %}
+            {% elif sort_by == "release_date" %}
+                {% for movie in movies_release %}
+                    <div class="movie-card" data-movie-slug="{{ movie.slug }}">
+                        {% if movie.poster_path %}
+                            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+                        {% else %}
+                            <div class="no-poster"></div>
+                        {% endif %}
+                        <span class="title">{{ movie.title }}</span>
+                    </div>
+                {% endfor %}
+            {% else %}
+                {% for movie in movies_default %}
+                    <div class="movie-card" data-movie-slug="{{ movie.slug }}">
+                        {% if movie.poster_path %}
+                            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+                        {% else %}
+                            <div class="no-poster"></div>
+                        {% endif %}
+                        <span class="title">{{ movie.title }}</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
     
@@ -225,5 +218,89 @@ Search
                 }
             });
         });
+
+        // Function to handle clicking on a movie poster
+    function handleMovieClick(movieSlug) {
+        // Get CSRF token
+        var csrftoken = getCookie('csrftoken');
+        
+        // Send AJAX request to add the movie to the database
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "{% url 'CriticCorner:add_movie' %}", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("X-CSRFToken", csrftoken); // Set CSRF token in headers
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // Movie added successfully
+                alert("Movie added to your local database!");
+            }
+        };
+        xhr.send(JSON.stringify({ slug: movieSlug }));
+    }
+
+    // Add click event listeners to movie cards
+    document.addEventListener("DOMContentLoaded", function() {
+        var movieCards = document.querySelectorAll(".movie-card");
+        movieCards.forEach(function(card) {
+            card.addEventListener("click", function() {
+                var movieSlug = card.getAttribute("data-movie-slug");
+                handleMovieClick(movieSlug);
+            });
+        });
+    });
+
+    // Function to get CSRF token from cookies
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    document.getElementById("filter-button").addEventListener("click", function() {
+    var selectedGenres = [];
+    var selectedReleaseDates = [];
+    var selectedLanguages = [];
+
+    // Get selected genres
+    document.querySelectorAll("#genre-filter .filter-checkbox:checked").forEach(function(checkbox) {
+        selectedGenres.push(checkbox.value);
+    });
+
+    // Get selected release dates
+    document.querySelectorAll("#release-date-filter .filter-checkbox:checked").forEach(function(checkbox) {
+        selectedReleaseDates.push(checkbox.value);
+    });
+
+    // Get selected languages
+    document.querySelectorAll("#language-filter .filter-checkbox:checked").forEach(function(checkbox) {
+        selectedLanguages.push(checkbox.value);
+    });
+
+    // Construct URL with selected filters
+    var url = "{% url 'CriticCorner:search' %}?q={{ query }}&sort_by={{ sort_by }}";
+
+    if (selectedGenres.length > 0) {
+        url += "&genres=" + selectedGenres.join(",");
+    }
+
+    if (selectedReleaseDates.length > 0) {
+        url += "&release_dates=" + selectedReleaseDates.join(",");
+    }
+
+    if (selectedLanguages.length > 0) {
+        url += "&languages=" + selectedLanguages.join(",");
+    }
+
+    window.location.href = url;
+});
     </script>
 {% endblock %}

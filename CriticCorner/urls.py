@@ -15,4 +15,5 @@ urlpatterns = [
     path('review/restrict/', views.review_restrict, name='review_restrict'),
     path('search/', views.search_view, name='search'),
     path('account/', views.account_view, name='account'),
+    path('add_movie/', views.add_movie, name='add_movie'),
 ]

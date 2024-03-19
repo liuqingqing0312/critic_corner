@@ -1,4 +1,5 @@
 from audioop import avg, avgpp
+import json
 import os
 from urllib.parse import unquote_plus
 from django.shortcuts import render, get_object_or_404
@@ -184,3 +185,27 @@ def search_view(request):
                                                         "movies_default": movies_default,
                                                         "query": query,
                                                         "sort_by": sort_by})
+
+def add_movie(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        movies_data = data.get("movies")
+        if movies_data:
+            for movie_data in movies_data:
+                # Here, you would extract relevant information from the movie data
+                # and create a new Movie object in the database
+                movie = Movie.objects.create(
+                    title=movie_data.get("title"),
+                    genre=movie_data.get("genre"),
+                    # Add more fields as necessary
+                )
+                # Assuming you have fields like 'slug' and 'poster_path' in movie_data,
+                # you can set them accordingly as well
+
+                # Save the movie to the database
+                movie.save()
+            return JsonResponse({"status": "success"})
+        else:
+            return JsonResponse({"status": "error", "message": "No movie data provided"}, status=400)
+    else:
+        return JsonResponse({"status": "error", "message": "Invalid request method"}, status=400)
