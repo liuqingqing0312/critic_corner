@@ -16,7 +16,8 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db.models import Avg
-from CriticCorner.helpers.TMBDactions import advanced_movie_search, advanced_movie_search_sorted_by_popularity, advanced_movie_search_sorted_by_release
+from CriticCorner.helpers.TMBDactions import advanced_movie_search, get_genres, advanced_movie_search_sorted_by_release
+from django.template.defaultfilters import slugify
 
 def about(request):
     return render(request, "CriticCorner/about.html")
@@ -43,6 +44,14 @@ def contact(request):
 
 def movie(request, slug):
     movie = Movie.objects.filter(slug=slug).first()
+
+    # When called from search it will be a post request because there is a chance the movie doesnt exist yet
+    if request.method == "POST":
+        #we have recieved the post
+        request.POST.get("id")
+
+
+
     reviews = Review.objects.filter(movie=movie)
     total_rating = sum(review.rating for review in reviews)
     average_rating = total_rating / reviews.count() if reviews.count() > 0 else 0
@@ -173,18 +182,16 @@ def account_view(request):
 
 def search_view(request):
     query = request.GET.get("q", "")
-    sort_by = request.GET.get("sort_by", "default")  # Get the sorting option
 
-    # Fetch movies for each sorting option
-    movies_popularity = advanced_movie_search_sorted_by_popularity(query)
-    movies_release = advanced_movie_search_sorted_by_release(query)
-    movies_default = advanced_movie_search(query)
+    movies = advanced_movie_search(query)
+    
+    for i in range(len(movies)):
+        movies[i]["slug"] = slugify(movies[i]["title"] + str(movies[i]["release_date"])[:10])
+    
 
-    return render(request, "CriticCorner/search.html", {"movies_popularity": movies_popularity,
-                                                        "movies_release": movies_release,
-                                                        "movies_default": movies_default,
+    return render(request, "CriticCorner/search.html", {"movies": movies,
                                                         "query": query,
-                                                        "sort_by": sort_by})
+                                                        "genres": get_genres()})
 
 def add_movie(request):
     if request.method == "POST":

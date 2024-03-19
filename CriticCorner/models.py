@@ -7,7 +7,6 @@ import glob
 from django.template.defaultfilters import slugify
 from six import python_2_unicode_compatible
 
-from CriticCorner.helpers.TMBDactions import get_genres
 
 MIN_RATING_VALUE = 0
 MAX_RATING_VALUE = 5

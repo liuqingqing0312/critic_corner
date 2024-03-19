@@ -123,14 +123,16 @@ Search
         <div class="filter-title">BY Genre</div>
         <div class="filter-group" id="genre-filter">
 
-            <label><input type="checkbox" class="filter-checkbox">Action</label><br>
-            <label><input type="checkbox" class="filter-checkbox">Comedy</label><br>
+            {% for key, genre in genres.items %}
+            <label id="genre"><input type="checkbox" class="filter-checkbox">{{ genre }}</label><br>
+            {% endfor%}
+            {% comment %} <label><input type="checkbox" class="filter-checkbox">Comedy</label><br>
             <label><input type="checkbox" class="filter-checkbox">Horror</label><br>
             <label><input type="checkbox" class="filter-checkbox">Science</label><br>
             <label><input type="checkbox" class="filter-checkbox">Crime</label><br>
             <label><input type="checkbox" class="filter-checkbox">Drama</label><br>
             <label><input type="checkbox" class="filter-checkbox">Fantasy</label><br>
-            <label><input type="checkbox" class="filter-checkbox">Romance</label><br>
+            <label><input type="checkbox" class="filter-checkbox">Romance</label><br> {% endcomment %}
         </div>
         <div class="filter-title">BY Release Date</div>
 <div class="filter-group" id="release-date-filter">
@@ -158,149 +160,86 @@ Search
             <option value="default">Default</option>
             <option value="popularity">Popularity</option>
             <option value="release_date">Release Date</option>
+            <option value="release_date">Title</option>
         </select>
         <button id="sort-button">Sort</button>
     </div>
     <div class="results-section">
         <h3>Search Results for "{{ query }}":</h3>
         <div class="movies-container" id="movies-container">
-            {% if sort_by == "popularity" %}
-                {% for movie in movies_popularity %}
-                    <div class="movie-card" data-movie-slug="{{ movie.slug }}">
-                        {% if movie.poster_path %}
-                            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
-                        {% else %}
-                            <div class="no-poster"></div>
-                        {% endif %}
-                        <span class="title">{{ movie.title }}</span>
-                    </div>
-                {% endfor %}
-            {% elif sort_by == "release_date" %}
-                {% for movie in movies_release %}
-                    <div class="movie-card" data-movie-slug="{{ movie.slug }}">
-                        {% if movie.poster_path %}
-                            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
-                        {% else %}
-                            <div class="no-poster"></div>
-                        {% endif %}
-                        <span class="title">{{ movie.title }}</span>
-                    </div>
-                {% endfor %}
-            {% else %}
-                {% for movie in movies_default %}
-                    <div class="movie-card" data-movie-slug="{{ movie.slug }}">
-                        {% if movie.poster_path %}
-                            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
-                        {% else %}
-                            <div class="no-poster"></div>
-                        {% endif %}
-                        <span class="title">{{ movie.title }}</span>
-                    </div>
-                {% endfor %}
-            {% endif %}
+            {% for movie in movies %}
+                <div class="movie-card" id="movie-card" data-movie-slug="{{ movie.slug }}" data-title = "{{ movie.title }}" 
+                    data-rating = {{ movie.rating }} data-views = {{ movie.views }} data-release-date = "{{movie.release_date}}">
+                    {% if movie.poster_path %}
+                        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+                    {% else %}
+                        <div class="no-poster"></div>
+                    {% endif %}
+                    <span class="title">{{ movie.title }}</span>
+                </div>
+            {% endfor %}
         </div>
     </div>
     
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById("sort-button").addEventListener("click", function() {
-                var select = document.getElementById("sort-select");
-                var selectedOption = select.options[select.selectedIndex].value;
-                
-                // Redirect to the appropriate URL based on the selected sorting option
-                if (selectedOption === "popularity") {
-                    window.location.href = "{% url 'CriticCorner:search' %}?q={{ query }}&sort_by=popularity";
-                } else if (selectedOption === "release_date") {
-                    window.location.href = "{% url 'CriticCorner:search' %}?q={{ query }}&sort_by=release_date";
-                } else {
-                    // Default sorting
-                    window.location.href = "{% url 'CriticCorner:search' %}?q={{ query }}";
-                }
-            });
-        });
 
-        // Function to handle clicking on a movie poster
-    function handleMovieClick(movieSlug) {
-        // Get CSRF token
-        var csrftoken = getCookie('csrftoken');
+    const sortButton = document.getElementById('sort-button');
+    sortButton.addEventListener('click', handleSortClick);
+
+    const genreButton = document.getElementById('')
+
+    function sortByDate(a, b){
+        const releaseDateA = new Date(a.dataset.releaseDate);
+        const releaseDateB = new Date(b.dataset.releaseDate);
         
-        // Send AJAX request to add the movie to the database
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "{% url 'CriticCorner:add_movie' %}", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.setRequestHeader("X-CSRFToken", csrftoken); // Set CSRF token in headers
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                // Movie added successfully
-                alert("Movie added to your local database!");
-            }
-        };
-        xhr.send(JSON.stringify({ slug: movieSlug }));
+        return releaseDateA - releaseDateB;
     }
 
-    // Add click event listeners to movie cards
-    document.addEventListener("DOMContentLoaded", function() {
-        var movieCards = document.querySelectorAll(".movie-card");
-        movieCards.forEach(function(card) {
-            card.addEventListener("click", function() {
-                var movieSlug = card.getAttribute("data-movie-slug");
-                handleMovieClick(movieSlug);
-            });
-        });
-    });
+    function sortByRating(a,b){
+        const ratingA = a.dataset.rating
+        const ratingB = b.dataset.rating
 
-    // Function to get CSRF token from cookies
-    function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            var cookies = document.cookie.split(';');
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
+        return ratingA - ratingB;
+    }
+
+    function sortByTitle(a, b){
+        const titleA = a.dataset.title
+        const titleB = b.dataset.title
+
+        return titleA < titleB;
+    }
+
+    function sortMoviesByCriteria(sortFunc){
+        const resultsContainer = document.getElementById('movies-container');
+        const results = Array.from(resultsContainer.querySelectorAll('.movie-card'));
+        
+        results.sort(sortFunc);
+    
+        // Clear the container
+        resultsContainer.innerHTML = '';
+    
+        // Append the sorted results to the container
+        results.forEach(result => resultsContainer.appendChild(result));
+    }
+
+    function handleSortClick() {
+        const sortSelect = document.getElementById('sort-select');
+        const selectedOption = sortSelect.value;
+    
+        switch (selectedOption) {
+            case 'popularity':
+                sortMoviesByCriteria(sortByRating);
+                break;
+            case 'release_date':
+                sortMoviesByCriteria(sortByDate);
+                break;
+            case 'title':
+                sortMoviesByCriteria(sortByTitle);
+                break;
+            default:
+                // No sorting or default sorting logic
+                break;
         }
-        return cookieValue;
     }
-
-    document.getElementById("filter-button").addEventListener("click", function() {
-    var selectedGenres = [];
-    var selectedReleaseDates = [];
-    var selectedLanguages = [];
-
-    // Get selected genres
-    document.querySelectorAll("#genre-filter .filter-checkbox:checked").forEach(function(checkbox) {
-        selectedGenres.push(checkbox.value);
-    });
-
-    // Get selected release dates
-    document.querySelectorAll("#release-date-filter .filter-checkbox:checked").forEach(function(checkbox) {
-        selectedReleaseDates.push(checkbox.value);
-    });
-
-    // Get selected languages
-    document.querySelectorAll("#language-filter .filter-checkbox:checked").forEach(function(checkbox) {
-        selectedLanguages.push(checkbox.value);
-    });
-
-    // Construct URL with selected filters
-    var url = "{% url 'CriticCorner:search' %}?q={{ query }}&sort_by={{ sort_by }}";
-
-    if (selectedGenres.length > 0) {
-        url += "&genres=" + selectedGenres.join(",");
-    }
-
-    if (selectedReleaseDates.length > 0) {
-        url += "&release_dates=" + selectedReleaseDates.join(",");
-    }
-
-    if (selectedLanguages.length > 0) {
-        url += "&languages=" + selectedLanguages.join(",");
-    }
-
-    window.location.href = url;
-});
     </script>
 {% endblock %}

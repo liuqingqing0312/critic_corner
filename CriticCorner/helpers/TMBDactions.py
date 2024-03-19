@@ -2,8 +2,13 @@
 from tmdbv3api import Movie, TMDb, Genre
 from datetime import datetime, timedelta
 from django.utils.text import slugify
+import CriticCorner.models as models
 import json
 import requests
+from django.core.files import File
+import random
+from django.conf import settings
+from urllib import request
 from typing import Optional
 
 API_KEY = "e359feb309aff2209a6cfea5553838bf"
@@ -83,6 +88,26 @@ def advanced_movie_search(title: str) -> list:
 
     return movies
 
+def movie_json_to_movie_object(movie_dict: dict) -> models.Movie:
+     mov_id = movie_dict["id"]
+    
+     genre = ",".join([get_genres_by_id(i) for i in movie_dict["genre_ids"]])
+     url = get_trailer_url_by_id(mov_id)
+     m = models.Movie.objects.get_or_create(api_id=mov_id,
+                                    title= movie_dict["title"],
+                                    genre=genre,
+                                    url=url,)[0]
+     m.ratings = 20
+     m.avg_rating = float(random.randint(0,5))
+     m.views = 60
+
+     image_url = settings.ONLINE_IMAGE_ROOT + movie_dict["poster_path"]
+     result = request.urlretrieve(image_url)
+    
+     m.poster.save(content=File(file=open(result[0], 'rb')), name=movie_dict["poster_path"][2:])
+     m.save()
+
+     return m
 def advanced_movie_search_sorted_by_popularity(title: str) -> list:
     movies = advanced_movie_search(title)
     sorted_movies = sorted(movies, key=lambda x: x.get('popularity', 0), reverse=True)
