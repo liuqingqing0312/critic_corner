@@ -13,4 +13,5 @@ urlpatterns = [
     path('movie/<str:title>/', views.movie, name='movie'),
     path('wishlist/', views.wishlist, name='wishlist'),
     path('add_review/', views.add_review, name='add_review'),
+    path('account/', views.account_page, name='account'),
 ]
