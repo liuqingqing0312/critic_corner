@@ -19,7 +19,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db.models import Avg
-from CriticCorner.helpers.TMBDactions import advanced_movie_search, get_genres, get_trailer_url_by_id
+from CriticCorner.helpers.TMBDactions import advanced_movie_search, get_genres, get_trailer_url_by_id, get_genres_by_id
 from django.template.defaultfilters import slugify
 
 def about(request):
@@ -64,6 +64,8 @@ def movie(request, slug):
                 
                 movie.poster.save(content=File(file=open(result[0], 'rb')), name=poster_path[2:])
                 movie.url = url
+                print(type(json.loads(movie.genre)))
+                movie.genre = ",".join([get_genres_by_id(id) for id in json.loads(movie.genre)])
                 movie.save()
 
                 

@@ -48,9 +48,12 @@ def get_trailer_url_by_id(id: int) -> str:
     """returns youtube video url."""
 
     video_object = [chungus for chungus in movie.videos(id)][-1]
-
-    # if no proper results then return early
-    if len(video_object)< 6:
+    print(dir(video_object))
+    
+    try:
+        dict(video_object)["key"]
+    except:
+        # Somethings gone wrong with the api, just send a joke video
         return "https://www.youtube.com/embed/ihyjXd2C-E8"
     return "https://www.youtube.com/embed/"+dict(video_object)["key"]
 
