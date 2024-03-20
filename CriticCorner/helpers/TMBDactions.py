@@ -48,8 +48,7 @@ def get_trailer_url_by_id(id: int) -> str:
     """returns youtube video url."""
 
     video_object = [chungus for chungus in movie.videos(id)][-1]
-    print(dir(video_object))
-    
+        
     try:
         dict(video_object)["key"]
     except:
