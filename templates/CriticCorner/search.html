@@ -102,8 +102,12 @@ Search
     }
 
     .movie-title {
-        display: block; /* Display the title on a new line */
-        margin-top: 10px; /* Adjust spacing between the poster and title */
+        height: 40px; /* Adjust based on your design needs */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Show max 2 lines */
+        -webkit-box-orient: vertical;
     }
 
     a {
@@ -272,7 +276,21 @@ Search
         } else {
             movie.style.display = 'none';
         }
+        if (isGenreMatch && isLanguageMatch && isReleaseDateMatch) {
+            movie.style.display = 'inline-flex'; // Make sure to match the initial display style
+        } else {
+            movie.style.display = 'none';
+        }
+
+        // If you have specific styles that need to be reapplied to visible cards, do it here
+        reapplyStyles(movie); // Assuming this function is defined to reapply dynamic styles
     });
 });
+    function reapplyStyles(movieCard) {
+        // This is a placeholder for any style re-application logic
+        // For example, if you need to reset certain styles to ensure consistency after filtering:
+        movieCard.style.height = '380px'; // Resetting height, if dynamically changed
+        // Other style adjustments can be made here
+    }
     </script>
 {% endblock %}
