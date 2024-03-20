@@ -17,7 +17,7 @@
             <span class="details-container">
                 <h3 class="title">{{ movie.title }}</h3>
                 <p class="genre">Genre: {{ movie.genre }}</p>
-                <p class="views">Views: {{ movie.views }}</p>
+                <p class="views">Views: {{ reviews_count }}</p>
                 <p class="avg-rating">Average Rating: {{ movie.avg_rating }}</p>
                 <form method="post" action="{% url 'CriticCorner:add_wishlist' %}">
                     {% csrf_token %}

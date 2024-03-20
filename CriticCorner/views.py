@@ -28,9 +28,9 @@ def about(request):
 
 def home(request):
     # Retrieve popular, new released, and top-rated movies from the database
-    popular_movies = Movie.objects.order_by('views')  # Adjust this filter based on your criteria
-    new_released_movies = Movie.objects.order_by('-release_date')
-    top_rated_movies = Movie.objects.order_by('-avg_rating')
+    popular_movies = Movie.objects.order_by('views')[:5]  # Adjust this filter based on your criteria
+    new_released_movies = Movie.objects.order_by('-release_date')[:5]
+    top_rated_movies = Movie.objects.order_by('-avg_rating')[:5]
 
     # Pass the movie data to the template context
     context = {
@@ -74,9 +74,10 @@ def movie(request, slug):
 
 
     reviews = Review.objects.filter(movie=movie)
+    reviews_count = reviews.count()
     total_rating = sum(review.rating for review in reviews)
     average_rating = total_rating / reviews.count() if reviews.count() > 0 else 0
-    return render(request, 'CriticCorner/movie.html', {'movie': movie, 'reviews': reviews, 'average_rating': average_rating})
+    return render(request, 'CriticCorner/movie.html', {'movie': movie, 'reviews': reviews, 'average_rating': average_rating, 'reviews_count': reviews_count})
 
 @receiver(post_save, sender=User, dispatch_uid='save_new_user_profile')
 def save_profile(sender, instance, created, **kwargs):
