@@ -2,7 +2,6 @@
 from tmdbv3api import Movie, TMDb, Genre
 from datetime import datetime, timedelta
 from django.utils.text import slugify
-import CriticCorner.models as models
 import json
 import requests
 from django.core.files import File
@@ -12,7 +11,7 @@ from urllib import request
 from typing import Optional
 
 API_KEY = "e359feb309aff2209a6cfea5553838bf"
-MAX_NUM_PAGES_TO_LOAD = 10
+MAX_NUM_PAGES_TO_LOAD = 5
 
 movie = Movie()
 movie.api_key = API_KEY
@@ -47,7 +46,9 @@ def get_genres_by_id(id: int) -> str:
 
 def get_trailer_url_by_id(id: int) -> str:
     """returns youtube video url."""
+
     video_object = [chungus for chungus in movie.videos(id)][0]
+
     # if no proper results then return early
     if len(video_object)< 6:
         return "https://www.youtube.com/embed/ihyjXd2C-E8"
@@ -88,26 +89,6 @@ def advanced_movie_search(title: str) -> list:
 
     return movies
 
-def movie_json_to_movie_object(movie_dict: dict) -> models.Movie:
-     mov_id = movie_dict["id"]
-    
-     genre = ",".join([get_genres_by_id(i) for i in movie_dict["genre_ids"]])
-     url = get_trailer_url_by_id(mov_id)
-     m = models.Movie.objects.get_or_create(api_id=mov_id,
-                                    title= movie_dict["title"],
-                                    genre=genre,
-                                    url=url,)[0]
-     m.ratings = 20
-     m.avg_rating = float(random.randint(0,5))
-     m.views = 60
-
-     image_url = settings.ONLINE_IMAGE_ROOT + movie_dict["poster_path"]
-     result = request.urlretrieve(image_url)
-    
-     m.poster.save(content=File(file=open(result[0], 'rb')), name=movie_dict["poster_path"][2:])
-     m.save()
-
-     return m
 def advanced_movie_search_sorted_by_popularity(title: str) -> list:
     movies = advanced_movie_search(title)
     sorted_movies = sorted(movies, key=lambda x: x.get('popularity', 0), reverse=True)
@@ -135,8 +116,8 @@ def get_genres() -> dict:
 if __name__ == "__main__":
     #test script
     # print(len(get_movies_by_search("and")))
-    # print(get_trailer_url_by_id(93782))
+    print(get_trailer_url_by_id(93782))
     # print(get_genres())
     
     # print(advanced_movie_search("life"))
-    print(advanced_movie_search_sorted_by_release("life"))
+    # print(advanced_movie_search_sorted_by_release("life"))

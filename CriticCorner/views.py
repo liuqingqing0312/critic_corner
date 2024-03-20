@@ -6,17 +6,20 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from django.contrib.auth import login, authenticate
 import requests
+from urllib import request as req
+from django.core.files import File
 from CriticCorner.models import Movie, UserProfile, Review, WishList
-from CriticCorner.forms import UserForm, UserProfileForm, ReviewForm
+from CriticCorner.forms import UserForm, UserProfileForm, ReviewForm, MovieForm
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db.models import Avg
-from CriticCorner.helpers.TMBDactions import advanced_movie_search, get_genres, advanced_movie_search_sorted_by_release
+from CriticCorner.helpers.TMBDactions import advanced_movie_search, get_genres, get_trailer_url_by_id
 from django.template.defaultfilters import slugify
 
 def about(request):
@@ -47,9 +50,25 @@ def movie(request, slug):
 
     # When called from search it will be a post request because there is a chance the movie doesnt exist yet
     if request.method == "POST":
-        #we have recieved the post
-        request.POST.get("id")
+        # We have recieved the post
+        if movie == None:
+            # Movie not in database, we have to add it
+            form = MovieForm(request.POST)
+            if form.is_valid():
+                # Now add all the neccessary details before we can submit
+                movie = form.save(commit=False)
+                url = get_trailer_url_by_id(movie.api_id)
+                poster_path = form.cleaned_data["poster_path"]
+                image_url = settings.ONLINE_IMAGE_ROOT + poster_path
+                result = req.urlretrieve(image_url)
+                
+                movie.poster.save(content=File(file=open(result[0], 'rb')), name=poster_path[2:])
+                movie.url = url
+                movie.save()
 
+                
+            else:
+                print(form.errors)
 
 
     reviews = Review.objects.filter(movie=movie)

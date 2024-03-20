@@ -15,13 +15,6 @@ Search
             {% for key, genre in genres.items %}
             <label id="genre"><input type="checkbox" class="filter-checkbox" value="{{ key }}">{{ genre }}</label><br>
             {% endfor%}
-            {% comment %} <label><input type="checkbox" class="filter-checkbox">Comedy</label><br>
-            <label><input type="checkbox" class="filter-checkbox">Horror</label><br>
-            <label><input type="checkbox" class="filter-checkbox">Science</label><br>
-            <label><input type="checkbox" class="filter-checkbox">Crime</label><br>
-            <label><input type="checkbox" class="filter-checkbox">Drama</label><br>
-            <label><input type="checkbox" class="filter-checkbox">Fantasy</label><br>
-            <label><input type="checkbox" class="filter-checkbox">Romance</label><br> {% endcomment %}
         </div>
         <div class="filter-title">BY Release Date</div>
 <div class="filter-group" id="release-date-filter">
@@ -60,17 +53,31 @@ Search
                 <div class="movie-card" id="movie-card" data-movie-slug="{{ movie.slug }}" data-title = "{{ movie.title }}" 
                     data-rating = "{{ movie.rating }}" data-views = "{{ movie.views }}" data-release-date = "{{ movie.release_date }}" data-language = "{{ movie.original_language }}"
                     data-genre = "{{ movie.genre_ids }}" data-popularity = "{{ movie.popularity }}">
+                    <form action="{% url 'CriticCorner:movie' slug=movie.slug %}" id="{{ movie.id }}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="api_id" value="{{ movie.id }}">
+                    <input type="hidden" name="title" value="{{ movie.title }}">
+                    <input type="hidden" name="release_date" value="{{ movie.release_date }}">
+                    <input type="hidden" name="language" value="{{ movie.original_language }}">
+                    <input type="hidden" name="genre" value="{{ movie.genre_ids }}">
+                    <input type="hidden" name="popularity" value="{{ movie.popularity }}">
+                    <input type="hidden" name="poster_path" value="{{ movie.poster_path }}">
+
                     {% if movie.poster_path %}
-                        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+                        <input type="image" src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
                     {% else %}
-                        <img src="{% static 'default_poster.png' %}" alt="">
+                        <input type="image" src="{% static 'default_poster.png' %}" alt="">
                     {% endif %}
-                    <span class="title">{{ movie.title }}</span>
+
+                    <a  href="{% url 'CriticCorner:movie' slug=movie.slug %}" onclick="document.getElementById('{{ movie.id }}').submit(); return false;" ><span class="title">{{ movie.title }}</span></a>
+                    
+                    </form>
                 </div>
             {% endfor %}
         </div>
     </div>
     
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
 
     const sortButton = document.getElementById('sort-button');

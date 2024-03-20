@@ -85,7 +85,7 @@
     margin-right: 20px; /* Adjust margin between movie cards */
 }
 
-.movie-card img {
+.movie-card input[type="image"]  {
     width: 200px;
     height: 300px;
     object-fit: cover;
@@ -99,6 +99,18 @@
     display: -webkit-box;
     -webkit-line-clamp: 2; /* Show max 2 lines */
     -webkit-box-orient: vertical;
+}
+
+input[type="image"] {
+    display: inline-flex; /* Use inline-flex to align cards in a row */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center-align items horizontally */
+    text-align: center; /* Center-align the content within each movie card */
+    margin-right: 20px; /* Adjust margin between movie cards */
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
+    margin-bottom: 10px; /* Add some space between the poster and the title */
 }
 
 a {

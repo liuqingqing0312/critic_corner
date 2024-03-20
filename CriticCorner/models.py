@@ -21,7 +21,6 @@ class Movie(models.Model):
     
     #the id that is used by TMBD api to identify a specific movie
     api_id = models.IntegerField(primary_key=True, default=0)
-    
     title = models.CharField(max_length=256)
     genre = models.CharField(max_length=1000)
     

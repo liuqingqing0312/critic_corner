@@ -24,6 +24,7 @@ class ReviewForm(forms.ModelForm):
         }
         
 class MovieForm(forms.ModelForm):
+    poster_path = forms.CharField(required=False, widget=forms.Textarea, label='Extra Information')
     class Meta:
         model = Movie
-        fields = '__all__'
+        fields = ['api_id', 'title', 'genre', 'release_date']
