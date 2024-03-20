@@ -185,8 +185,8 @@ def search_view(request):
 
     movies = advanced_movie_search(query)
     
-    for i in range(len(movies)):
-        movies[i]["slug"] = slugify(movies[i]["title"] + str(movies[i]["release_date"])[:10])
+    for movie in movies:
+        movie["slug"] = slugify(movie["title"] + str(movie.get("release_date", ""))[:10])
     
 
     return render(request, "CriticCorner/search.html", {"movies": movies,

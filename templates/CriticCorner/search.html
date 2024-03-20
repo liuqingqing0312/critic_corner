@@ -85,27 +85,20 @@ Search
     }
 
     .movie-card {
-        display: inline-block; /* Display movie cards inline */
-        margin-right: 20px; /* Adjust margin between movie cards */
-        text-align: center; /* Center-align the content within each movie card */
+        display: inline-flex; /* Use inline-flex to align cards in a row */
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center-align items horizontally */
         width: 220px; /* Set a fixed width for movie cards */
         height: 380px; /* Set a fixed height for movie cards */
-        position: relative; /* Positioning for title */
+        text-align: center; /* Center-align the content within each movie card */
+        margin-right: 20px; /* Adjust margin between movie cards */
     }
 
     .movie-card img {
-        width: 200px; /* Adjust width of movie poster */
-        height: 300px; /* Adjust height of movie poster */
-        object-fit: cover; /* Maintain aspect ratio and fill the container */
-    }
-
-    .no-poster {
-        width: 200px; /* Adjust width of placeholder */
-        height: 300px; /* Adjust height of placeholder */
-        background-color: #ccc; /* Placeholder background color */
-        display: flex;
-        align-items: center; /* Center-align content vertically */
-        justify-content: center; /* Center-align content horizontally */
+        width: 200px;
+        height: 300px;
+        object-fit: cover;
+        margin-bottom: 10px; /* Add some space between the poster and the title */
     }
 
     .movie-title {
@@ -122,9 +115,8 @@ Search
     <div class="filter-section">
         <div class="filter-title">BY Genre</div>
         <div class="filter-group" id="genre-filter">
-
             {% for key, genre in genres.items %}
-            <label id="genre"><input type="checkbox" class="filter-checkbox">{{ genre }}</label><br>
+            <label id="genre"><input type="checkbox" class="filter-checkbox" value="{{ key }}">{{ genre }}</label><br>
             {% endfor%}
             {% comment %} <label><input type="checkbox" class="filter-checkbox">Comedy</label><br>
             <label><input type="checkbox" class="filter-checkbox">Horror</label><br>
@@ -160,7 +152,7 @@ Search
             <option value="default">Default</option>
             <option value="popularity">Popularity</option>
             <option value="release_date">Release Date</option>
-            <option value="release_date">Title</option>
+            <option value="title">Title</option>
         </select>
         <button id="sort-button">Sort</button>
     </div>
@@ -169,11 +161,12 @@ Search
         <div class="movies-container" id="movies-container">
             {% for movie in movies %}
                 <div class="movie-card" id="movie-card" data-movie-slug="{{ movie.slug }}" data-title = "{{ movie.title }}" 
-                    data-rating = {{ movie.rating }} data-views = {{ movie.views }} data-release-date = "{{movie.release_date}}">
+                    data-rating = "{{ movie.rating }}" data-views = "{{ movie.views }}" data-release-date = "{{ movie.release_date }}" data-language = "{{ movie.original_language }}"
+                    data-genre = "{{ movie.genre_ids }}" data-popularity = "{{ movie.popularity }}">
                     {% if movie.poster_path %}
                         <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
                     {% else %}
-                        <div class="no-poster"></div>
+                        <img src="{% static 'default_poster.png' %}" alt="">
                     {% endif %}
                     <span class="title">{{ movie.title }}</span>
                 </div>
@@ -192,21 +185,22 @@ Search
         const releaseDateA = new Date(a.dataset.releaseDate);
         const releaseDateB = new Date(b.dataset.releaseDate);
         
-        return releaseDateA - releaseDateB;
+        return releaseDateB - releaseDateA;
     }
 
-    function sortByRating(a,b){
-        const ratingA = a.dataset.rating
-        const ratingB = b.dataset.rating
+    function sortByPopularity(a,b){
+        const popularityA = a.dataset.popularity
+        const popularityB = b.dataset.popularity
 
-        return ratingA - ratingB;
+        return popularityB - popularityA;
     }
 
-    function sortByTitle(a, b){
-        const titleA = a.dataset.title
-        const titleB = b.dataset.title
-
-        return titleA < titleB;
+    function sortByTitle(a, b) {
+        const titleA = a.dataset.title;
+        const titleB = b.dataset.title;
+        if (titleA < titleB) return -1;
+        if (titleA > titleB) return 1;
+        return 0;
     }
 
     function sortMoviesByCriteria(sortFunc){
@@ -228,7 +222,7 @@ Search
     
         switch (selectedOption) {
             case 'popularity':
-                sortMoviesByCriteria(sortByRating);
+                sortMoviesByCriteria(sortByPopularity);
                 break;
             case 'release_date':
                 sortMoviesByCriteria(sortByDate);
@@ -241,5 +235,44 @@ Search
                 break;
         }
     }
+
+    document.getElementById('filter-button').addEventListener('click', function() {
+    const genreFilters = document.querySelectorAll('#genre-filter input[type="checkbox"]:checked');
+    const selectedGenreIds = Array.from(genreFilters).map(input => parseInt(input.value));
+    const releaseDateFilters = document.querySelectorAll('#release-date-filter input[type="checkbox"]:checked');
+    const languageFilters = document.querySelectorAll('#language-filter input[type="checkbox"]:checked');
+
+    const filteredReleaseDates = Array.from(releaseDateFilters).map(input => input.value);
+    const filteredLanguages = Array.from(languageFilters).map(input => input.value);
+
+    const movies = document.querySelectorAll('.movie-card');
+
+    movies.forEach(movie => {
+        // Parse the movie's data-genre attribute into an array of integers
+        const movieGenreIds = movie.getAttribute('data-genre').split(',').map(Number);
+        
+        // Check if the movie's genre list contains any of the selected genres
+        const isGenreMatch = selectedGenreIds.length === 0 || selectedGenreIds.some(id => movieGenreIds.includes(id));
+        
+        const movieReleaseDate = new Date(movie.getAttribute('data-release-date'));
+        const movieLanguage = movie.getAttribute('data-language');
+
+        // For language matching, ensure the comparison accounts for any language
+        const isLanguageMatch = filteredLanguages.length === 0 || filteredLanguages.includes(movieLanguage);
+        
+        // Release date matching logic remains the same
+        const isReleaseDateMatch = filteredReleaseDates.length === 0 || filteredReleaseDates.some(filter => {
+            const today = new Date();
+            const monthsAgo = new Date(today.getFullYear(), today.getMonth() - parseInt(filter), today.getDate());
+            return movieReleaseDate >= monthsAgo;
+        });
+
+        if (isGenreMatch && isLanguageMatch && isReleaseDateMatch) {
+            movie.style.display = 'inline-block';
+        } else {
+            movie.style.display = 'none';
+        }
+    });
+});
     </script>
 {% endblock %}
