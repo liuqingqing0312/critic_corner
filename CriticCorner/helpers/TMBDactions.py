@@ -47,7 +47,7 @@ def get_genres_by_id(id: int) -> str:
 def get_trailer_url_by_id(id: int) -> str:
     """returns youtube video url."""
 
-    video_object = [chungus for chungus in movie.videos(id)][0]
+    video_object = [chungus for chungus in movie.videos(id)][-1]
 
     # if no proper results then return early
     if len(video_object)< 6:
