@@ -1,0 +1,106 @@
+.filter-section {
+    float: left;
+    width: 20%;
+    padding: 20px;
+    border-right: 2px solid #ddd;
+}
+
+.results-section {
+    float: right;
+    width: 75%;
+    padding: 20px;
+}
+
+.search-bar-container {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.search-input {
+    width: 60%;
+    padding: 10px;
+    font-size: 20px;
+    margin-right: -4px;
+    border: 2px solid #ddd;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+}
+
+.search-button {
+    padding: 12px 20px;
+    font-size: 20px;
+    border: none;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+}
+
+.search-button:hover {
+    background-color: #555;
+}
+
+.filter-title {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.filter-group {
+    margin-bottom: 20px;
+}
+
+.filter-checkbox {
+    margin-right: 5px;
+}
+
+.result-item {
+    margin-bottom: 10px;
+
+    background: #ccc;
+    width: 100%;
+    padding-top: 56.25%;
+
+    position: relative;
+}
+
+.sort-section {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.movie-card {
+    display: inline-flex; /* Use inline-flex to align cards in a row */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center-align items horizontally */
+    width: 220px; /* Set a fixed width for movie cards */
+    height: 380px; /* Set a fixed height for movie cards */
+    text-align: center; /* Center-align the content within each movie card */
+    margin-right: 20px; /* Adjust margin between movie cards */
+}
+
+.movie-card img {
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
+    margin-bottom: 10px; /* Add some space between the poster and the title */
+}
+
+.movie-title {
+    height: 40px; /* Adjust based on your design needs */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Show max 2 lines */
+    -webkit-box-orient: vertical;
+}
+
+a {
+    color: black;
+}
