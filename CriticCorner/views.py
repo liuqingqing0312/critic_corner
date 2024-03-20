@@ -11,6 +11,9 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from django.shortcuts import render
+from django.http import JsonResponse
+
 def about(request):
     return render(request, 'CriticCorner/about.html')
 
@@ -100,3 +103,11 @@ def add_review(request):
     else:
         # Handle GET requests if needed (optional)
         pass
+
+def account_page(request):
+    # Assuming user is authenticated and user object is available
+    user = request.user
+    context = {
+        'user': user
+    }
+    return render(request, 'account.html', context)
