@@ -15,7 +15,6 @@ class UserProfileForm(forms.ModelForm):
         fields = ('phone_number', 'picture',)
 
 class ReviewForm(forms.Form):
-    content = forms.CharField(, max_length=, required=True)
     class Meta:
         fields = ['content', 'rating']
         labels = {
