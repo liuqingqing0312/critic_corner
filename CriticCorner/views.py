@@ -130,11 +130,17 @@ def add_review(request):
         # Calculate the new average rating
         # https://math.stackexchange.com/questions/22348/how-to-add-and-subtract-values-from-an-average#:~:text=I%20want%20to%20add%20a%20value%20to%20an,d%20s%20i%20z%20e%20n%20e%20w
         # see above for explanation
-        new_avg_rating = movie.avg_rating + ((float(review.rating) - float(movie.avg_rating))/movie.ratings) 
+        if movie.ratings > 0:
+            # if statement to avoid dividing by zero
+            new_avg_rating = movie.avg_rating + ((float(review.rating) - float(movie.avg_rating))/movie.ratings) 
+        else:
+            new_avg_rating = rating
         print("New Average Rating:", new_avg_rating)
 
         # Update the movie's average rating
         movie.avg_rating = new_avg_rating
+        # Add to ratings counter because we have added another
+        movie.ratings += 1
         movie.save()
         print("Updated Average Rating:", movie.avg_rating)
         
