@@ -10,9 +10,6 @@ Account
 
 <div class="account-container">
     <div class="user-info">
-        {% if user.userprofile.picture %}
-            <img src="{{ user.userprofile.picture.url }}" alt="Profile Picture">
-        {% endif %}
         <h2>Username: {{ user.username }}</h2>
         <h4>Phone number: {{ user.userprofile.phone_number }}</h4>
     </div>
