@@ -17,8 +17,8 @@
             <span class="details-container">
                 <h3 class="title">{{ movie.title }}</h3>
                 <p class="genre">Genre: {{ movie.genre }}</p>
-                <p class="views">Views: {{ reviews_count }}</p>
-                <p class="avg-rating">Average Rating: {{ movie.avg_rating }}</p>
+                <p class="views">Reviews: {{ reviews_count }}</p>
+                <p class="avg-rating">Average Rating: {{ movie.avg_rating|floatformat:2 }}</p>
                 <form method="post" action="{% url 'CriticCorner:add_wishlist' %}">
                     {% csrf_token %}
                     <input type="hidden" name="title" value="{{ movie.title }}">
@@ -52,7 +52,7 @@
                 <label for="review_content">Review:</label>
                 <textarea id="review_content" name="content" rows="4" cols="50" required></textarea>
                 <label for="review_rating">Rating (out of 5):</label>
-                <input type="number" step="any" id="review_rating" name="rating" min="1" max="5" required>
+                <input type="number" step="any" id="review_rating" name="rating" min="1.0" max="5.0" required>
                 <input type="submit" value="Submit Review">
             </form>
         </div>
