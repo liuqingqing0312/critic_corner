@@ -128,7 +128,9 @@ def add_review(request):
         )
 
         # Calculate the new average rating
-        new_avg_rating = Review.objects.filter(movie=movie).aggregate(Avg('rating'))['rating__avg']
+        # https://math.stackexchange.com/questions/22348/how-to-add-and-subtract-values-from-an-average#:~:text=I%20want%20to%20add%20a%20value%20to%20an,d%20s%20i%20z%20e%20n%20e%20w
+        # see above for explanation
+        new_avg_rating = movie.avg_rating + ((int(review.rating) - int(movie.avg_rating))/movie.ratings) 
         print("New Average Rating:", new_avg_rating)
 
         # Update the movie's average rating
