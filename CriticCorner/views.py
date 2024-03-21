@@ -132,7 +132,7 @@ def add_review(request):
         # see above for explanation
         if movie.ratings > 0:
             # if statement to avoid dividing by zero
-            new_avg_rating = movie.avg_rating + ((float(review.rating) - float(movie.avg_rating))/movie.ratings) 
+            new_avg_rating = Review.objects.filter(movie=movie).aggregate(Avg('rating'))['rating__avg'] 
         else:
             new_avg_rating = rating
         print("New Average Rating:", new_avg_rating)
