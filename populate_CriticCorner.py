@@ -11,7 +11,7 @@ import CriticCorner.models as models
 from CriticCorner.helpers.TMBDactions import *
 
 def populate():
-    # Our Movie model is designed to only accept JSON responses 
+    # Our site is designed to only accept JSON responses 
     # From the TMDB API so our test data is also in this form.
     
     movies = [{'adult': False, 'backdrop_path': '/s9YTxwaByYeoSqugYjJJtZjMRAG.jpg', 'genre_ids': [28, 27, 35, 53], 'id': 1211483, 'original_language': 'en', 'original_title': 'Skal - Fight for Survival', 
