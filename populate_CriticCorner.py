@@ -6,6 +6,8 @@ import django
 from django.core.files import File
 from django.conf import settings
 from urllib import request
+from django.db.models import Avg
+
 django.setup()
 import CriticCorner.models as models
 from CriticCorner.helpers.TMBDactions import *
@@ -81,6 +83,10 @@ def populate():
     def add_review(user, movie, content, rating):
         r = models.Review.objects.get_or_create(user=user, movie=movie, content=content, rating=rating)[0]
         r.save()
+        movie.ratings += 1
+        new_avg_rating = models.Review.objects.filter(movie=movie).aggregate(Avg('rating'))['rating__avg'] 
+        movie.avg_rating = new_avg_rating
+        movie.save()
         return r
     
     def add_wishlist(user, movie):
